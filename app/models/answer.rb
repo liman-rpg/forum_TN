@@ -1,6 +1,5 @@
 class Answer < ApplicationRecord
   belongs_to :question
 
-  validates :body, :question_id, presence: true
-  validates :body, length: { minimum: 5 }
+  validates :body,length: { minimum: 5 }, presence: true
 end
