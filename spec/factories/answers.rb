@@ -3,4 +3,8 @@ FactoryGirl.define do
     body "Rspec Body Answer"
     question
   end
+
+  factory :invalid_answer, class:"Answer" do
+    body nil
+  end
 end
