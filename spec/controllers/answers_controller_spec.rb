@@ -56,6 +56,42 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe "POST #update"
+  describe "POST #update" do
+    context 'with valid attributes' do
+      let(:update_valid_answer) { post :update, params: { id: answer.id, answer: attributes_for(:answer), question_id: question.id } }
+
+      it 'assigns request the answer to @answer' do
+        update_valid_answer
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it "update answer's params in database" do
+        post :update, params: { id: answer.id, answer: { body: 'New Body'} }
+        answer.reload
+        expect(answer.body).to eq "New Body"
+      end
+
+      it 'redirect to answers question' do
+        update_valid_answer
+        expect(response).to redirect_to answer.question
+      end
+    end
+
+    context 'with invalid attributes' do
+      let(:update_invalid_answer) { post :update, params: { id: answer.id, answer: attributes_for(:invalid_answer) } }
+
+      before { update_invalid_answer }
+
+      it "don't update answer's params in database" do
+        answer.reload
+        expect(answer.body).to eq "Rspec Body Answer"
+      end
+
+      it 're-renders :edit view' do
+        expect(response).to render_template :edit
+      end
+    end
+  end
+
   describe "DELETE #destroy"
 end
