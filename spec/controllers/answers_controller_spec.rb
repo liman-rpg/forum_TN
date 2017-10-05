@@ -16,7 +16,18 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe "GET #edit"
+  describe "GET #edit" do
+    before { get :edit, params: { id: answer.id } }
+
+    it 'assigns requested answer to @answer' do
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'render edit view' do
+      expect(response).to render_template :edit
+    end
+  end
+
   describe "POST #create"
   describe "POST #update"
   describe "DELETE #destroy"
