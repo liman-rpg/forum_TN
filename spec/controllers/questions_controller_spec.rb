@@ -119,7 +119,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe "POST #destroy" do
+  describe "DELETE #destroy" do
     before { question }
     let(:delete_question) { delete :destroy, params: { id: question.id } }
 
