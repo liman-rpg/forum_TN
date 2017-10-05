@@ -63,7 +63,6 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirects to show view' do
         create_valid_question
-
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
@@ -75,10 +74,47 @@ RSpec.describe QuestionsController, type: :controller do
         expect{ create_invalid_question }.to_not change(Question, :count)
       end
 
-      it 'redirects to show view' do
+      it 're-render new view' do
         create_invalid_question
-
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe "POST #update" do
+    context 'with valid attributes' do
+      let(:update_valid_question) { post :update, params: { id: question.id, question: attributes_for(:question) } }
+
+      it 'assigns request the question to @question' do
+        update_valid_question
+        expect(assigns(:question)).to eq question
+      end
+
+      it "update question's params in database" do
+        post :update, params: { id: question.id, question: { title: 'New Title', body: 'New Body'} }
+        question.reload
+        expect(question.title).to eq "New Title"
+        expect(question.body).to eq "New Body"
+      end
+
+      it 'redirect to update question' do
+        update_valid_question
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'with invalid attributes' do
+      let(:update_invalid_question) { post :update, params: { id: question.id, question: attributes_for(:invalid_question) } }
+      before { update_invalid_question }
+
+      it "don't update question's params in database" do
+        question.reload
+        expect(question.title).to eq "Rspec Title"
+        expect(question.body).to eq "Rspec Body"
+      end
+
+      it 're-renders :edit view' do
+        expect(response).to render_template :edit
       end
     end
   end
