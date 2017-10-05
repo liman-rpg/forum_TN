@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :load_question, only: :create
-  before_action :load_answer, only: [:edit, :update]
+  before_action :load_answer, only: [:edit, :update, :destroy]
 
   def new
     @answer = Answer.new
@@ -26,6 +26,11 @@ class AnswersController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @answer.destroy
+    redirect_to question_path(@answer.question)
   end
 
   private
