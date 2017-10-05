@@ -123,7 +123,7 @@ RSpec.describe QuestionsController, type: :controller do
     before { question }
     let(:delete_question) { delete :destroy, params: { id: question.id } }
 
-    it 'assigns request the question to @question' do
+    it 'delete question from database' do
       expect{ delete_question }.to change(Question, :count).by(-1)
     end
 
