@@ -118,4 +118,18 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe "POST #destroy" do
+    before { question }
+    let(:delete_question) { delete :destroy, params: { id: question.id } }
+
+    it 'assigns request the question to @question' do
+      expect{ delete_question }.to change(Question, :count).by(-1)
+    end
+
+    it 'redirect_to index view' do
+      delete_question
+      expect(response).to redirect_to questions_path
+    end
+  end
 end
