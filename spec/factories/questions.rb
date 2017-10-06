@@ -1,6 +1,8 @@
 FactoryGirl.define do
+  sequence(:title) { |n| "RspecQuestionTitle#{n}" }
+
   factory :question do
-    title "Rspec Title"
+    title
     body "Rspec Body"
   end
 
