@@ -1,0 +1,7 @@
+%p
+  Questions list:
+
+%p
+  - @questions.each do |question|
+    %ul
+      %tr= link_to question.title, question_path(question)
