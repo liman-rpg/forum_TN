@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'Show question with answers', %q{
   The user can view a question with answers

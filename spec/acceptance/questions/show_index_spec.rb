@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'Show questions_path page', %q{
   The user can view a list of questions,
