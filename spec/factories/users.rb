@@ -1,7 +1,9 @@
 FactoryGirl.define do
+  sequence(:email) { |n| "rspec#{n}@test.com" }
+
   factory :user do
     name 'Rspec Username'
-    email 'rspec@test.com'
+    email
     password 'welcome'
   end
 end

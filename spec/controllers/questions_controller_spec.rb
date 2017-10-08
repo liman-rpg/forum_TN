@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:user)     { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -30,6 +31,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "GET #new" do
+    sign_in_user
     before { get :new }
 
     it 'assigns a new Question to @question' do
@@ -42,6 +44,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "GET #edit" do
+    sign_in_user
     before { get :edit, params: { id: question.id } }
 
     it 'assigns an edit Question to @question' do
@@ -54,6 +57,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "POST #create" do
+    sign_in_user
+
     context 'with valid attributes' do
       let(:create_valid_question) { post :create, params: { question: attributes_for(:question) } }
 
@@ -82,6 +87,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "POST #update" do
+    sign_in_user
+
     context 'with valid attributes' do
       let(:update_valid_question) { post :update, params: { id: question.id, question: attributes_for(:question) } }
 
@@ -109,8 +116,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it "don't update question's params in database" do
         question.reload
-        expect(question.title).to eq "Rspec Title"
-        expect(question.body).to eq "Rspec Body"
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
       end
 
       it 're-renders :edit view' do
@@ -120,6 +127,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
+    sign_in_user
     before { question }
     let(:delete_question) { delete :destroy, params: { id: question.id } }
 
