@@ -1,0 +1,11 @@
+= simple_form_for(@question) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :title
+    = f.input :body
+
+  .form-actions
+    = f.button :submit
+
+%p= link_to 'Back', questions_path
