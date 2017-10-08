@@ -4,6 +4,7 @@ FactoryGirl.define do
   factory :question do
     title
     body "Rspec Body"
+    user
   end
 
   factory :invalid_question, class:"Question" do
