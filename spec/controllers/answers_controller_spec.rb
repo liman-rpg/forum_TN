@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer)   { create(:answer) }
+  let(:user)     { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let(:answer)   { create(:answer, user: user, question: question) }
 
   describe "GET #new" do
+    sign_in_user
+
     before { get :new, params: { question_id: question.id } }
 
     it 'assigns a new Answer to @answer' do
@@ -17,6 +20,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "GET #edit" do
+    sign_in_user
     before { get :edit, params: { id: answer.id } }
 
     it 'assigns requested answer to @answer' do
@@ -29,6 +33,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "POST #create" do
+    sign_in_user
+
     context 'with valid attributes' do
       let(:create_valid_answer) { post :create, params: { answer: attributes_for(:answer), question_id: question.id } }
 
@@ -57,6 +63,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "POST #update" do
+    sign_in_user
+
     context 'with valid attributes' do
       let(:update_valid_answer) { post :update, params: { id: answer.id, answer: attributes_for(:answer), question_id: question.id } }
 
@@ -94,6 +102,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "DELETE #destroy" do
+    sign_in_user
     before { answer }
     let(:delete_answer) { delete :destroy, params: { id: answer.id } }
 

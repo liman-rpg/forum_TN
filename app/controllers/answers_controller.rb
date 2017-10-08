@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy]
   before_action :load_question, only: :create
   before_action :load_answer, only: [:edit, :update, :destroy]
 
@@ -12,6 +13,8 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
+
     if @answer.save
       redirect_to question_path(@question)
     else
