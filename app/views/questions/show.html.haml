@@ -1,4 +1,12 @@
 %question
   = render 'question'
 
+%answers
+  %p= render 'answers'
+
+- if user_signed_in?
+  %answers-form
+    %p= render 'answers/form'
+
 %p= link_to 'Back', questions_path
+

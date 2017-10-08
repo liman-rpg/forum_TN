@@ -12,9 +12,11 @@ en:
       default_message: "Please review the problems below:"
     # Examples
     labels:
-      defaults:
+      question:
         title: Title
         body: Body
+      answer:
+        body: Body Answer
     #   user:
     #     new:
     #       email: 'E-mail to sign in.'
