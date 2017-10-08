@@ -11,9 +11,10 @@ en:
     error_notification:
       default_message: "Please review the problems below:"
     # Examples
-    # labels:
-    #   defaults:
-    #     password: 'Password'
+    labels:
+      defaults:
+        title: Title
+        body: Body
     #   user:
     #     new:
     #       email: 'E-mail to sign in.'
