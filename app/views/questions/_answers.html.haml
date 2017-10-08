@@ -1,0 +1,6 @@
+- unless @question.answers.empty?
+  %h3 Answers list:
+  - @question.answers.each do |answer|
+    %p= render answer
+- else
+  %p Empty answers list

@@ -1,0 +1,7 @@
+%div
+  %p Author:
+  %p= answer.user.email
+  %p= answer.body
+
+  %links
+    = link_to " Delete", answer, method: :delete, remote: true, data: { confirm: "Are you sure?"}
