@@ -102,17 +102,31 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    sign_in_user
     before { answer }
     let(:delete_answer) { delete :destroy, params: { id: answer.id } }
 
-    it 'delete answer from database' do
-      expect{ delete_answer }.to change(Answer, :count).by(-1)
-    end
+    context 'author'
+      before do
+        user
+        @request.env['devise.mapping'] = Devise.mappings[:user]
+        sign_in(user)
+      end
 
-    it 'redirect_to answers question' do
-      delete_answer
-      expect(response).to redirect_to question_path(answer.question)
+      it 'delete answer from database' do
+        expect{ delete_answer }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirect_to answers question' do
+        delete_answer
+        expect(response).to redirect_to question_path(answer.question)
+      end
+
+    context 'not author' do
+      sign_in_user
+
+      it 'does not remove a answer from the database' do
+        expect{ delete_answer }.to_not change(Answer, :count)
+      end
     end
   end
 end
