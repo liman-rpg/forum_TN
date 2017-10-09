@@ -42,6 +42,10 @@ RSpec.describe AnswersController, type: :controller do
         expect{ create_valid_answer }.to change(question.answers, :count).by(+1)
       end
 
+      it "associated with the user" do
+        expect { create_valid_answer }.to change(@user.answers, :count).by(+1)
+      end
+
       it 'redirects to show view' do
         create_valid_answer
         expect(response).to redirect_to question_path(question)
@@ -53,6 +57,10 @@ RSpec.describe AnswersController, type: :controller do
 
       it "don't save new question in database" do
         expect{ create_invalid_answer }.to_not change(Answer, :count)
+      end
+
+      it "not associated with the user" do
+        expect { create_invalid_answer }.to_not change(@user.answers, :count)
       end
 
       it 're-render new view' do

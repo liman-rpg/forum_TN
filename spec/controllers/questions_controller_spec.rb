@@ -66,6 +66,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect{ create_valid_question }.to change(Question, :count).by(+1)
       end
 
+      it "associated with the user" do
+        expect { create_valid_question }.to change(@user.questions, :count).by(+1)
+      end
+
       it 'redirects to show view' do
         create_valid_question
         expect(response).to redirect_to question_path(assigns(:question))
@@ -77,6 +81,10 @@ RSpec.describe QuestionsController, type: :controller do
 
       it "don't save new question in database" do
         expect{ create_invalid_question }.to_not change(Question, :count)
+      end
+
+      it "not associated with the user" do
+        expect { create_invalid_question }.to_not change(@user.questions, :count)
       end
 
       it 're-render new view' do
