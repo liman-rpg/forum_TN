@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
 
-  validates :name, :email, :password, presence: true
+  validates :name, presence: true
 
   def author_of?(object)
     id == object.user_id
