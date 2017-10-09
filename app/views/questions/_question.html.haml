@@ -6,6 +6,6 @@
   Body:
 %p= @question.body
 
-- if user_signed_in? && current_user.id == @question.user.id
+- if user_signed_in? && current_user.author_of?(@question)
   %links
     = link_to " Delete", @question, method: :delete, remote: true, data: { confirm: "Are you sure?" }
