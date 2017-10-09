@@ -32,8 +32,10 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
-    redirect_to question_path(@answer.question), notice: 'Your answer was successfully destroy.'
+    if current_user.author_of?(@answer)
+      @answer.destroy
+      redirect_to question_path(@answer.question), notice: 'Your answer was successfully destroy.'
+    end
   end
 
   private
