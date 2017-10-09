@@ -1,8 +1,8 @@
 %question
-  = render 'question'
+  = render @question
 
 %answers
-  %p= render 'answers'
+  %p= render 'questions/answers'
 
 - if user_signed_in?
   %answers-form

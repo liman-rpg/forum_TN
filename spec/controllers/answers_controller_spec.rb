@@ -5,20 +5,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, user: user) }
   let(:answer)   { create(:answer, user: user, question: question) }
 
-  describe "GET #new" do
-    sign_in_user
-
-    before { get :new, params: { question_id: question.id } }
-
-    it 'assigns a new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'render new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe "GET #edit" do
     sign_in_user
     before { get :edit, params: { id: answer.id } }
@@ -63,9 +49,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { create_invalid_answer }.to_not change(@user.answers, :count)
       end
 
-      it 're-render new view' do
+      it 're-render question #show' do
         create_invalid_answer
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end

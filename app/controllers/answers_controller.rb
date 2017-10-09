@@ -3,10 +3,6 @@ class AnswersController < ApplicationController
   before_action :load_question, only: :create
   before_action :load_answer, only: [:edit, :update, :destroy]
 
-  def new
-    @answer = Answer.new
-  end
-
   def edit
     @answer = Answer.find(params[:id])
   end
@@ -18,7 +14,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      render :new
+      render 'questions/show'
     end
   end
 
