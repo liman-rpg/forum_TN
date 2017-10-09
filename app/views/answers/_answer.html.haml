@@ -3,6 +3,6 @@
   %p= answer.user.email
   %p= answer.body
 
-- if user_signed_in? && current_user.id == answer.user.id
+- if user_signed_in? && current_user.author_of?(answer)
   %links
     = link_to " Delete Answer", answer, method: :delete, remote: true, data: { confirm: "Are you sure?" }
