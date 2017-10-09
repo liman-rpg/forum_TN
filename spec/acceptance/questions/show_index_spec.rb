@@ -6,15 +6,14 @@ feature 'Show questions_path page', %q{
   The client can see questions list
 } do
 
-  given!(:questions) { create_list(:question, 3) }
+  given!(:questions) { create_list(:question, 2) }
 
   scenario 'Show #index' do
     visit questions_path
 
     expect(page).to have_content 'Questions list:'
-    expect(page).to have_link 'RspecQuestionTitle1'
-    expect(page).to have_link 'RspecQuestionTitle2'
-    expect(page).to have_link 'RspecQuestionTitle3'
+    expect(page).to have_link(questions[0].title, href: question_path(questions[0]))
+    expect(page).to have_link(questions[1].title, href: question_path(questions[1]))
     expect(current_path).to eq questions_path
   end
 end
