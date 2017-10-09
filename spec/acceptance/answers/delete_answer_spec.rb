@@ -7,8 +7,8 @@ feature 'Delete answer', %q{
 } do
   given(:author)       { create(:user) }
   given(:another_user) { create(:user) }
-  given!(:question)     { create(:question, user: author) }
-  given!(:answer)       { create(:answer, question: question, user: author) }
+  given!(:question)    { create(:question, user: author) }
+  given!(:answer)      { create(:answer, question: question, user: author) }
 
   scenario 'Authenticate user try delete him answer' do
     sign_in(author)
@@ -16,6 +16,7 @@ feature 'Delete answer', %q{
     click_on 'Delete Answer'
 
     expect(page).to have_content 'Your answer was successfully destroy.'
+    expect(page).to_not have_content answer.body
     expect(current_path).to eq question_path(question)
   end
 
