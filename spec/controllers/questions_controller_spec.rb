@@ -135,31 +135,34 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    before { question }
+    sign_in_user
     let(:delete_question) { delete :destroy, params: { id: question.id } }
 
     context 'author' do
-      before do
-        user
-        @request.env['devise.mapping'] = Devise.mappings[:user]
-        sign_in(user)
-      end
+      let(:question) { Question.create!(title: 'ExampleTitle', body: 'ExampleBody', user_id: @user.id) }
 
       it 'delete question from database' do
+        question
         expect{ delete_question }.to change(Question, :count).by(-1)
       end
 
-      it 'redirect_to index view' do
+      it 'redirects to root_path' do
         delete_question
         expect(response).to redirect_to questions_path
+        expect(flash[:notice]).to be_present
       end
     end
 
     context 'not author' do
-      sign_in_user
-
       it 'does not remove a question from the database' do
+        question
         expect{ delete_question }.to_not change(Question, :count)
+      end
+
+      it "redirects to root_path" do
+        delete_question
+        expect(response).to redirect_to questions_path
+        expect(flash[:notice]).to be_present
       end
     end
   end
