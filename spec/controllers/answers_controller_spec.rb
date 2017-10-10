@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user)     { create(:user) }
-  let(:question) { create(:question, user: user) }
-  let(:answer)   { create(:answer, user: user, question: question) }
+  let(:question) { create(:question) }
+  let(:answer)   { create(:answer, user: user) }
 
   describe "GET #edit" do
     sign_in_user
@@ -96,30 +96,34 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    before { answer }
+    sign_in_user
     let(:delete_answer) { delete :destroy, params: { id: answer.id } }
 
-    context 'author'
-      before do
-        user
-        @request.env['devise.mapping'] = Devise.mappings[:user]
-        sign_in(user)
-      end
+    context 'author' do
+      let(:answer) { Answer.create!(body: 'ExampleBody',question_id: question.id, user_id: @user.id) }
 
       it 'delete answer from database' do
+        answer
         expect{ delete_answer }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirect_to answers question' do
+      it 'redirects to question show view with notice' do
         delete_answer
         expect(response).to redirect_to question_path(answer.question)
+        expect(flash[:notice]).to be_present
       end
+    end
 
     context 'not author' do
-      sign_in_user
-
       it 'does not remove a answer from the database' do
+        answer
         expect{ delete_answer }.to_not change(Answer, :count)
+      end
+
+      it "redirects to question show view with notice" do
+        delete_answer
+        expect(response).to redirect_to question_path(answer.question_id)
+        expect(flash[:notice]).to be_present
       end
     end
   end
