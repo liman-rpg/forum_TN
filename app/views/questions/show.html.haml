@@ -1,11 +1,11 @@
-%question
+.question
   = render @question
 
-%answers
+.answers
   %p= render 'questions/answers'
 
 - if user_signed_in?
-  %answers-form
+  .answers-form
     %p= render 'answers/form'
 
 %p= link_to 'Back', questions_path

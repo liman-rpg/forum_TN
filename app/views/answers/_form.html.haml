@@ -1,5 +1,6 @@
-= simple_form_for([@question, Answer.new]) do |f|
+= simple_form_for([@question, Answer.new], remote: true) do |f|
   = f.error_notification
+  .answers-errors-form
 
   .form-inputs
     = f.input :body

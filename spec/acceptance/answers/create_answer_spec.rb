@@ -8,7 +8,7 @@ feature 'Create answer', %q{
   given(:question) { create(:question) }
   given(:user)     { create(:user) }
 
-  describe 'Authenticate user' do
+  describe 'Authenticate user', js: true do
     before do
       sign_in(user)
       visit question_path(question)
@@ -23,22 +23,17 @@ feature 'Create answer', %q{
       expect(current_path).to eq question_path(question)
     end
 
-    # Не пойму как отобразить сообщения об ошибках  '= f.error_notification'
-    # Если делать редирект, они стираются.
+    scenario 'to create a non-valid answer' do
+      fill_in 'Body Answer', with: ''
+      click_on 'Create Answer'
 
-    # scenario 'try create nill answer' do
-    #   fill_in 'Body Answer', with: ''
-    #   click_on 'Reply'
+      expect(page).to have_content "Body can't be blank"
 
-    #   expect(page).to have_content "Body can't be blank"
-    # end
+      fill_in 'Body Answer', with: 'SML'
+      click_on 'Create Answer'
 
-    # scenario 'try create short answer (:body)' do
-    #   fill_in 'Body Answer', with: 'SML'
-    #   click_on 'Reply'
-
-    #   expect(page).to have_content "Body is too short (minimum is 5 characters)"
-    # end
+      expect(page).to have_content "Body is too short (minimum is 5 characters)"
+    end
   end
 
   scenario 'Unauthenticate user try create answer' do
