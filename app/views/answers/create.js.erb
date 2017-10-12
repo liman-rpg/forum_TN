@@ -3,7 +3,7 @@
     $('.answers-errors-form').append('<p><%= j massage%></p>');
   <% end %>
 <% else %>
-  $('.answers').append('<%= j render 'answer', answer: @answer %>');
+  $('.answers').append('<%= j render @answer %>');
   $('#answer_body').val('');
   $('.answers-errors-form').empty();
 <% end %>
