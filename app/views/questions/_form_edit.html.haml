@@ -1,0 +1,8 @@
+= simple_form_for(@question, remote: true) do |f|
+  .question-errors
+  .form-inputs
+    = f.input :title
+    = f.input :body
+
+  .form-actions
+    = f.button :submit

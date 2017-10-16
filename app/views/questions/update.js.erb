@@ -1,0 +1,9 @@
+$('.question .links .question-errors').text('');
+<% if @question.errors.present? %>
+  <% @question.errors.full_messages.each do |massage|%>
+    $('.question .links .question-errors').append("<p><%= j massage %></p>")
+  <% end %>
+<% else %>
+  // $(".notice").html("Your question was successfully updated.");
+  $('.question').html("<%= j render @question %>");
+<% end %>
