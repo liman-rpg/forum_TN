@@ -7,5 +7,7 @@
 %p= @question.body
 
 - if user_signed_in? && current_user.author_of?(@question)
-  %links
+  .links
+    = link_to "Edit", "", class: "edit-question-link"
+    = render "questions/form_edit"
     = link_to " Delete", @question, method: :delete, remote: true, data: { confirm: "Are you sure?" }
