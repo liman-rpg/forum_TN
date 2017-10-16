@@ -5,14 +5,17 @@ feature 'Edit question', %q{
   As a author question
   I want to change a question
 } do
-  given(:user)     { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given(:user)       { create(:user) }
+  given(:question)   { create(:question, user: user) }
+  given(:other_question)   { create(:question) }
 
   describe 'The authenticating user', js: true do
-    scenario "edit his question" do
+    before do
       sign_in(user)
       visit question_path(question)
+    end
 
+    scenario "edit his question" do
       within('.question') do
         click_on 'Edit'
 
@@ -50,10 +53,30 @@ feature 'Edit question', %q{
       expect(current_path).to eq question_path(question)
     end
 
-    scenario "sees link to edit"
-    scenario "edit the question of another user"
+    scenario "sees link to edit" do
+      within('.question .links') do
+        expect(page).to have_link 'Edit'
+      end
+    end
+
+    scenario "edit the question of another user" do
+      visit question_path(other_question)
+
+      within('.question') do
+        expect(page).to_not have_link 'Edit'
+      end
+    end
   end
+
   describe 'Not an authenticating user' do
-    scenario "try edit the question of another user"
+    before do
+      visit question_path(question)
+    end
+
+    scenario "don't sees link to edit" do
+      within('.question') do
+        expect(page).to_not have_link 'Edit'
+      end
+    end
   end
 end
