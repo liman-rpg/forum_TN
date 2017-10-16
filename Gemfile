@@ -38,6 +38,7 @@ gem 'rubocop'
 gem 'haml'
 gem 'devise'
 gem 'simple_form'
+gem 'pry-byebug'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
