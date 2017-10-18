@@ -1,0 +1,6 @@
+= simple_form_for(answer, remote: true, html: { id: "edit-answer-#{answer.id}" }) do |f|
+  .form-inputs
+    = f.input :body
+
+  .form-actions
+    = f.button :submit

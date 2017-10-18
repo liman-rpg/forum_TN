@@ -6,5 +6,7 @@
 
     - if user_signed_in? && current_user.author_of?(answer)
       .links
-        = link_to "Edit", ''
+        = link_to "Edit", '', class: 'edit-answer-link', data: { answer_id: answer.id }
+        .form-group
+          = render 'answers/form_edit', answer: answer
         = link_to " Delete Answer", answer, method: :delete, data: { confirm: "Are you sure?" }

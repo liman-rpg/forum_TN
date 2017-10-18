@@ -14,8 +14,8 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if
-      @answer.update(answer_params)
+    if @answer.update(answer_params)
+      flash[:notice] = "Your answer was successfully updated."
       redirect_to question_path(@answer.question)
     else
       render :edit
