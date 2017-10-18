@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:user)     { create(:user) }
-  let(:question) { create(:question, user: user) }
+  let(:question) { create(:question) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -97,29 +96,29 @@ RSpec.describe QuestionsController, type: :controller do
   describe "POST #update" do
     sign_in_user
 
-    context 'with valid attributes' do
-      let(:update_valid_question) { post :update, params: { id: question.id, question: attributes_for(:question), format: :js } }
+    let(:question)              { create(:question, user: @user) }
+    let(:update_valid_question) { post :update, params: { id: question.id, user: @user, question: { title: 'New Title', body: 'New Body'}, format: :js } }
 
+    before { update_valid_question }
+
+    context 'with valid attributes' do
       it 'assigns request the question to @question' do
-        update_valid_question
         expect(assigns(:question)).to eq question
       end
 
       it "update question's params in database" do
-        post :update, params: { id: question.id, question: { title: 'New Title', body: 'New Body'}, format: :js }
         question.reload
         expect(question.title).to eq "New Title"
         expect(question.body).to eq "New Body"
       end
 
       it 'render update.js' do
-        update_valid_question
         expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes' do
-      let(:update_invalid_question) { post :update, params: { id: question.id, question: attributes_for(:invalid_question), format: :js } }
+      let(:update_invalid_question) { post :update, params: { id: question.id, question: attributes_for(:invalid_question), user: @user, format: :js } }
       before { update_invalid_question }
 
       it "don't update question's params in database" do
