@@ -5,9 +5,9 @@ feature 'Edit question', %q{
   As a author question
   I want to change a question
 } do
-  given(:user)       { create(:user) }
-  given(:question)   { create(:question, user: user) }
-  given(:other_question)   { create(:question) }
+  given(:user)           { create(:user) }
+  given(:question)       { create(:question, user: user) }
+  given(:other_question) { create(:question) }
 
   describe 'The authenticating user', js: true do
     before do
@@ -65,6 +65,23 @@ feature 'Edit question', %q{
       within('.question') do
         expect(page).to_not have_link 'Edit'
       end
+    end
+
+    scenario 'sees validation errors' do
+      within('.question') do
+        click_on 'Edit'
+
+        fill_in 'Title', with: nil
+        fill_in 'Body', with: nil
+
+        click_on 'Update'
+      end
+
+      expect(page).to have_content "Title can't be blank"
+      expect(page).to have_content "Body can't be blank"
+      expect(page).to have_content "Body is too short (minimum is 5 characters)"
+      expect(page).to have_content question.title
+      expect(page).to have_content question.body
     end
   end
 
