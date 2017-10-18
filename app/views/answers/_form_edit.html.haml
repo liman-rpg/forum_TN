@@ -1,4 +1,5 @@
 = simple_form_for(answer, remote: true, html: { id: "edit-answer-#{answer.id}" }) do |f|
+  .answer-errors
   .form-inputs
     = f.input :body
 
