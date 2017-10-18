@@ -39,7 +39,19 @@ feature 'Edit answer', %q{
       end
     end
 
-    scenario 'sees validation errors'
+    scenario 'sees validation errors', js: true do
+      within('.answer') do
+        click_on 'Edit'
+
+        fill_in 'Body', with: nil
+
+        click_on 'Update'
+      end
+
+      expect(page).to have_content "Body can't be blank"
+      expect(page).to have_content "Body is too short (minimum is 5 characters)"
+      expect(page).to have_content answer.body
+    end
   end
 
   scenario "The authenticating user edit the answer of another user" do
