@@ -1,9 +1,10 @@
 - if answer.persisted?
-  %div
+  .answer
     %p Author:
     %p= answer.user.email
     %p= answer.body
 
-  - if user_signed_in? && current_user.author_of?(answer)
-    %links
-      = link_to " Delete Answer", answer, method: :delete, data: { confirm: "Are you sure?" }
+    - if user_signed_in? && current_user.author_of?(answer)
+      .links
+        = link_to "Edit", ''
+        = link_to " Delete Answer", answer, method: :delete, data: { confirm: "Are you sure?" }
