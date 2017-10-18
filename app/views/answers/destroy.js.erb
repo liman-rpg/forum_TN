@@ -1,0 +1,7 @@
+<% if @answer.destroyed? %>
+  <% id = @answer.id %>
+  $('.notice').append("<p>Your answer was successfully destroy.</p>")
+  $('.answers').find('#answer-id-<%= id %>').remove();
+<% else %>
+  $('.notice').append("<p >Your can't delete answer </p>")
+<% end %>
