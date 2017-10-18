@@ -98,7 +98,7 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
 
     context 'with valid attributes' do
-      let(:update_valid_question) { post :update, params: { id: question.id, question: attributes_for(:question) } }
+      let(:update_valid_question) { post :update, params: { id: question.id, question: attributes_for(:question), format: :js } }
 
       it 'assigns request the question to @question' do
         update_valid_question
@@ -106,20 +106,20 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it "update question's params in database" do
-        post :update, params: { id: question.id, question: { title: 'New Title', body: 'New Body'} }
+        post :update, params: { id: question.id, question: { title: 'New Title', body: 'New Body'}, format: :js }
         question.reload
         expect(question.title).to eq "New Title"
         expect(question.body).to eq "New Body"
       end
 
-      it 'redirect to update question' do
+      it 'render update.js' do
         update_valid_question
-        expect(response).to redirect_to question
+        expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes' do
-      let(:update_invalid_question) { post :update, params: { id: question.id, question: attributes_for(:invalid_question) } }
+      let(:update_invalid_question) { post :update, params: { id: question.id, question: attributes_for(:invalid_question), format: :js } }
       before { update_invalid_question }
 
       it "don't update question's params in database" do
@@ -128,8 +128,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq question.body
       end
 
-      it 're-renders :edit view' do
-        expect(response).to render_template :edit
+      it 'render update.js' do
+        expect(response).to render_template :update
       end
     end
   end
