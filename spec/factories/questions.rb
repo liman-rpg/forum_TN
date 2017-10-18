@@ -3,7 +3,7 @@ FactoryGirl.define do
 
   factory :question do
     title
-    body "Rspec Body"
+    body "RspecQuestionBody"
     user
   end
 
