@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
 
   def set_as_best
     @answer.set_as_best if current_user.author_of?(@answer.question)
-    redirect_to @answer.question
+    @answers = @answer.question.answers.order(best: :desc)
   end
 
   private

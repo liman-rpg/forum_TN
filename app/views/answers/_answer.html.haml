@@ -7,7 +7,7 @@
     - if user_signed_in? && current_user.author_of?(answer.question)
       .best-group
         - if answer.best.eql? false
-          = link_to 'Set as best', best_answer_path(answer), method: :post
+          = link_to 'Set as best', best_answer_path(answer), method: :post, remote: true
         - else
           %p The Best Answer
 
