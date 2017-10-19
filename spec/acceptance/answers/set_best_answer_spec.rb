@@ -27,12 +27,10 @@ feature 'Set best answer', %q{
       end
     end
 
-    scenario 'the author of the question to mark the best answer' do
+    scenario 'the author of the question to mark the best answer', js: true do
       within("#answer-id-#{answer_one.id}") do
         click_on 'Set as best'
-      end
 
-      within("#answer-id-#{answer_one.id}") do
         expect(page).to_not have_link 'Set as best'
         expect(page).to have_content 'The Best Answer'
       end
@@ -42,9 +40,7 @@ feature 'Set best answer', %q{
         expect(page).to_not have_content 'The Best Answer'
 
         click_on 'Set as best'
-      end
 
-      within("#answer-id-#{answer_two.id}") do
         expect(page).to_not have_link 'Set as best'
         expect(page).to have_content 'The Best Answer'
       end
@@ -54,6 +50,26 @@ feature 'Set best answer', %q{
         expect(page).to_not have_content 'The Best Answer'
       end
     end
+
+    scenario 'the best answer is first', js: true do
+      within("#answer-id-#{answer_one.id}") do
+        click_on 'Set as best'
+        wait_for_ajax
+      end
+
+      within '.answers' do
+        expect(page.first('div')[:id]).to eq "answer-id-#{answer_one.id}"
+      end
+
+      within("#answer-id-#{answer_two.id}") do
+        click_on 'Set as best'
+        wait_for_ajax
+      end
+
+      within '.answers' do
+        expect(page.first('div')[:id]).to eq "answer-id-#{answer_two.id}"
+      end
+    end
   end
 
   scenario 'The authenticating user and not the author of the question does not see the link' do
@@ -61,7 +77,6 @@ feature 'Set best answer', %q{
     visit question_path(question)
 
     within('.answers') do
-
       expect(page).to_not have_link 'Set as best'
     end
   end

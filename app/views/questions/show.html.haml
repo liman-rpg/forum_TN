@@ -2,7 +2,7 @@
   = render @question
 
 .answers
-  %p= render 'questions/answers'
+  %p= render @answers
 
 - if user_signed_in?
   .answers-form
