@@ -14,12 +14,11 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
+    @answer.update(answer_params) if current_user.author_of?(@answer)
   end
 
   def destroy
     @answer.destroy if current_user.author_of?(@answer)
-    # redirect_to question_path(@answer.question)
   end
 
   private
