@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user)     { create(:user) }
   let(:question) { create(:question) }
-  let(:answer)   { create(:answer, user: user) }
+  let(:answer)   { create(:answer) }
 
   describe "GET #edit" do
     sign_in_user
@@ -60,9 +60,10 @@ RSpec.describe AnswersController, type: :controller do
 
   describe "POST #update" do
     sign_in_user
+    let(:answer) {create(:answer, user: @user) }
 
     context 'with valid attributes' do
-      let(:update_valid_answer) { post :update, params: { id: answer.id, answer: { body: 'New Body'}, format: :js } }
+      let(:update_valid_answer) { post :update, params: { id: answer.id, user: @user, answer: { body: 'New Body'}, format: :js } }
 
       before { update_valid_answer }
 
@@ -81,7 +82,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      let(:update_invalid_answer) { post :update, params: { id: answer.id, answer: attributes_for(:invalid_answer), format: :js } }
+      let(:update_invalid_answer) { post :update, params: { id: answer.id, user: @user, answer: attributes_for(:invalid_answer), format: :js } }
 
       before { update_invalid_answer }
 
