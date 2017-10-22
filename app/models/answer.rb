@@ -4,6 +4,8 @@ class Answer < ApplicationRecord
 
   validates :body, length: { minimum: 5 }, presence: true
 
+  default_scope { order(best: :desc) }
+
   def set_as_best
     question.answers.update_all(best: false)
     self.update!(best: true)
