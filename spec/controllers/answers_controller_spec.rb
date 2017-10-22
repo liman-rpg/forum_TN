@@ -120,7 +120,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:delete_answer) { delete :destroy, params: { id: answer.id, format: :js } }
 
     context 'author' do
-      let(:answer) { Answer.create!(body: 'ExampleBody',question_id: question.id, user_id: @user.id) }
+      let!(:answer) { create(:answer, question: question, user: @user) }
 
       it 'delete answer from database' do
         answer
@@ -130,9 +130,6 @@ RSpec.describe AnswersController, type: :controller do
       it 'render destroy.js' do
         delete_answer
         expect(response).to render_template :destroy
-        # expect(flash[:notice]).to be_present
-
-        # Почему не проходит тест с :notice? по факту ведь сообещение есть. Или это так работает Rspec?
       end
     end
 
@@ -145,7 +142,6 @@ RSpec.describe AnswersController, type: :controller do
       it 'render destroy.js' do
         delete_answer
         expect(response).to render_template :destroy
-        # expect(flash[:notice]).to be_present
       end
     end
   end
