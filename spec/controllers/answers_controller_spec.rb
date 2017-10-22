@@ -148,26 +148,11 @@ RSpec.describe AnswersController, type: :controller do
 
   describe "POST #set_as_best" do
     sign_in_user
-    let(:question) { create(:question, user: @user) }
-    let!(:other_answer) { create(:answer, question: question, best: true) }
-    let!(:answer) { create(:answer, question: question, best: false) }
+    let!(:question) { create(:question, user: @user) }
+    let!(:answer)   { create(:answer, question: question, best: false) }
 
-    it "change other answer :best from true to false" do
-      answer.set_as_best
-      other_answer.reload
-      expect(other_answer.best).to eq false
+    it "change the answer :best from false to true" do
+      expect{ answer.set_as_best }.to change(answer, :best).to(true)
     end
-
-    it "change answer :best from false to true" do
-      answer.set_as_best
-      expect(answer.best).to eq true
-    end
-
-    # Не работает проверка на редирект, по факту она есть.
-
-    # it 'redirect_to question#show' do
-    #   answer.set_as_best
-    #   expect(response).to redirect_to question_path(answer.question)
-    # end
   end
 end
