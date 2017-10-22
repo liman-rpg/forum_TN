@@ -60,31 +60,49 @@ RSpec.describe AnswersController, type: :controller do
 
   describe "POST #update" do
     sign_in_user
-    let(:answer) {create(:answer, user: @user) }
 
-    context 'with valid attributes' do
-      let(:update_valid_answer) { post :update, params: { id: answer.id, user: @user, answer: { body: 'New Body'}, format: :js } }
+    context 'The author' do
+      let(:answer) {create(:answer, user: @user) }
 
-      before { update_valid_answer }
+      context 'with valid attributes' do
+        let(:update_valid_answer) { post :update, params: { id: answer.id, answer: { body: 'New Body'}, format: :js } }
 
-      it 'assigns request the answer to @answer' do
-        expect(assigns(:answer)).to eq answer
+        before { update_valid_answer }
+
+        it 'assigns request the answer to @answer' do
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it "update answer's params in database" do
+          answer.reload
+          expect(answer.body).to eq "New Body"
+        end
+
+        it 'render update.js' do
+          expect(response).to render_template :update
+        end
       end
 
-      it "update answer's params in database" do
-        answer.reload
-        expect(answer.body).to eq "New Body"
-      end
+      context 'with invalid attributes' do
+        let(:update_invalid_answer) { post :update, params: { id: answer.id, answer: attributes_for(:invalid_answer), format: :js } }
 
-      it 'render update.js' do
-        expect(response).to render_template :update
+        before { update_invalid_answer }
+
+        it "don't update answer's params in database" do
+          answer.reload
+          expect(answer.body).to eq "Rspec Body Answer"
+        end
+
+        it 'render update.js' do
+          expect(response).to render_template :update
+        end
       end
     end
 
-    context 'with invalid attributes' do
-      let(:update_invalid_answer) { post :update, params: { id: answer.id, user: @user, answer: attributes_for(:invalid_answer), format: :js } }
+    context 'Not the author' do
+      let(:update_valid_answer) { post :update, params: { id: answer.id, answer: { body: 'New Body'}, format: :js } }
 
-      before { update_invalid_answer }
+      before { update_valid_answer }
 
       it "don't update answer's params in database" do
         answer.reload
