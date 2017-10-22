@@ -18,7 +18,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy if current_user.author_of?(@answer)
+    if current_user.author_of?(@answer)
+      @answer.destroy
+      flash.now[:notice] = "Your answer was successfully destroy."
+    else
+      flash.now[:notice] = "You can't delete that answer"
+    end
   end
 
   def set_as_best
