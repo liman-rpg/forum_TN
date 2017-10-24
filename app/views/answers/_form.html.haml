@@ -7,10 +7,10 @@
 
   .form-attachment
     %p
-      = f.fields_for :attachments, @answer.attachments.build do |n|
-        .nested-fields
-          = n.label :file
-          = n.file_field :file
+      = f.simple_fields_for :attachments, @answer.attachments.build do |file|
+        = render 'attachments/attachment_fields', f: file
+      .links
+        = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields', f: :attachments
 
   .form-actions
     = f.button :submit
