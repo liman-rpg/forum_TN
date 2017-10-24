@@ -7,6 +7,8 @@ class Answer < ApplicationRecord
 
   default_scope { order(best: :desc) }
 
+  accepts_nested_attributes_for :attachments
+
   def set_as_best
     Answer.transaction do
       question.answers.update_all(best: false)

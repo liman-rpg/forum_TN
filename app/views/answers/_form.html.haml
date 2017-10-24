@@ -1,9 +1,16 @@
-= simple_form_for([@question, Answer.new], remote: true) do |f|
+= simple_form_for([@question, @answer], remote: true) do |f|
   = f.error_notification
   .answers-errors-form
 
   .form-inputs
     = f.input :body
+
+  .form-attachment
+    %p
+      = f.fields_for :attachments, @answer.attachments.build do |n|
+        .nested-fields
+          = n.label :file
+          = n.file_field :file
 
   .form-actions
     = f.button :submit
