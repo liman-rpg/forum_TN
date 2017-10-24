@@ -5,6 +5,13 @@
     = f.input :title
     = f.input :body
 
+    .form-attachment
+      %p
+        = f.fields_for :attachments do |n|
+          .nested-fields
+            = n.label :file
+            = n.file_field :file
+
   .form-actions
     = f.button :submit
 
