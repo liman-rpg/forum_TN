@@ -1,0 +1,6 @@
+<% if @attachment.destroyed? %>
+  $('.notice').html("<%= flash[:notice] %>")
+  $('.attachments-list').find('#attachment-id-<%= @attachment.id %>').remove();
+<% else %>
+  $('.notice').html("<%= flash[:notice] %>")
+<% end %>
