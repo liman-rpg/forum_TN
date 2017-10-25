@@ -11,6 +11,10 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
+  config.after(:suite) do
+    FileUtils.rm_rf(Dir["#{Rails.root}/public/uploads/attachment"])
+  end
+
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
   end
