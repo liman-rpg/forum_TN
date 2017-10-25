@@ -31,4 +31,22 @@ feature 'Add files to question', %q{
       expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
       expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/2/rails_helper.rb'
     end
+
+    scenario 'User can delete files when fill form', js: true do
+      click_on 'add file'
+
+      expect(page).to have_css(".nested-fields input", :count => 2)
+
+      within all('.nested-fields').first do
+        click_on 'remove task'
+      end
+
+      expect(page).to have_css(".nested-fields input", :count => 1)
+
+      within all('.nested-fields').first do
+        click_on 'remove task'
+      end
+
+      expect(page).to_not have_css(".nested-fields")
+    end
   end
