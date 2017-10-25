@@ -5,6 +5,10 @@ FactoryGirl.define do
     title
     body "RspecQuestionBody"
     user
+
+    trait :with_attachment do
+      after(:build) { |question| create(:attachment, attachable: question) }
+    end
   end
 
   factory :invalid_question, class:"Question" do
