@@ -1,9 +1,9 @@
 class Question < ApplicationRecord
   include Attachable
+  include Votable
 
   belongs_to :user
   has_many :answers, dependent: :destroy
-  has_many :votes, as: :votable, dependent: :destroy
 
   validates :title, :body, presence: true
   validates :body, length: { minimum: 5 }
