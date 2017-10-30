@@ -2,8 +2,8 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :get_votable, only: [:vote_up, :vote_down]
-    before_action :status_no_content, only: [:vote_up, :vote_down]
+    before_action :get_votable, only: [:vote_up, :vote_down, :vote_cancel]
+    before_action :status_no_content, only: [:vote_up, :vote_down, :vote_cancel]
   end
 
   def vote_up
@@ -13,6 +13,11 @@ module Voted
 
   def vote_down
     @votable.vote_down(current_user)
+    render json: { id: @votable.id, score: @votable.total_score }
+  end
+
+  def vote_cancel
+    @votable.vote_cancel(current_user)
     render json: { id: @votable.id, score: @votable.total_score }
   end
 

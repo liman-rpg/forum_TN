@@ -13,6 +13,10 @@ module Votable
     self.votes.create(score: -1, user: user)
   end
 
+  def vote_cancel(user)
+    self.votes.find_by(user: user).destroy if self.votes.exists?(user: user)
+  end
+
   def total_score
     self.votes.sum(:score)
   end
