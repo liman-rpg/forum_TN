@@ -1,7 +1,8 @@
 class Question < ApplicationRecord
+  belongs_to :user
   has_many :answers, dependent: :destroy
   has_many :attachments, as: :attachable, dependent: :destroy
-  belongs_to :user
+  has_many :votes, as: :votable, dependent: :destroy
 
   validates :title, :body, presence: true
   validates :body, length: { minimum: 5 }
