@@ -2,6 +2,7 @@ class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user
   has_many :attachments, as: :attachable, dependent: :destroy
+  has_many :votes, as: :votable, dependent: :destroy
 
   validates :body, length: { minimum: 5 }, presence: true
 
