@@ -9,6 +9,10 @@ module Votable
     self.votes.create(score: 1, user: user)
   end
 
+  def vote_down(user)
+    self.votes.create(score: -1, user: user)
+  end
+
   def total_score
     self.votes.sum(:score)
   end

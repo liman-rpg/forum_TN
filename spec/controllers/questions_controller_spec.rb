@@ -198,4 +198,33 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe "POST #vote_down" do
+    sign_in_user
+    let(:vote_down) { post :vote_down, params: { id: question } }
+
+    context 'as not the author' do
+      it "change vote count by +1" do
+        expect{ vote_down }.to change(question.votes, :count).by(+1)
+      end
+
+      it "render json with id, score" do
+        vote_down
+        expect(response.body).to eq ({ id: question.id, score: question.total_score }).to_json
+      end
+    end
+
+    context 'as the author' do
+      let(:question) { create(:question, user: @user) }
+
+      it "not change Vote count" do
+        expect{ vote_down }.to_not change(question.votes, :count)
+      end
+
+      it 'render status 204' do
+        vote_down
+        expect(response.status).to eq(204)
+      end
+    end
+  end
 end

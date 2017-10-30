@@ -20,5 +20,12 @@ RSpec.describe Question, type: :model do
         expect(model.votes.first.score).to eq 1
       end
     end
+
+    describe '#vote_down' do
+      it 'create new vote with score = -1' do
+        expect { model.vote_down(user) }.to change(model.votes, :count).by(1)
+        expect(model.votes.first.score).to eq -1
+      end
+    end
   end
 end
