@@ -172,6 +172,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe "POST #vote_up" do
     sign_in_user
+
     let(:vote_up) { post :vote_up, params: { id: question } }
 
     context 'as not the author' do
@@ -201,6 +202,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe "POST #vote_down" do
     sign_in_user
+
     let(:vote_down) { post :vote_down, params: { id: question } }
 
     context 'as not the author' do
@@ -223,6 +225,34 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'render status 204' do
         vote_down
+        expect(response.status).to eq(204)
+      end
+    end
+  end
+
+  describe "POST #vote_cancel" do
+    sign_in_user
+
+    before { post :vote_cancel, params: { id: question } }
+
+    context 'as not the author' do
+      it "delete vote" do
+        expect(question.votes.count).to eq 0
+      end
+
+      it "render json with id, score" do
+        expect(response.body).to eq ({ id: question.id, score: question.total_score }).to_json
+      end
+    end
+
+    context 'as the author' do
+      let(:question) { create(:question, user: @user) }
+
+      it "not change Vote count" do
+        expect(question.votes.count).to eq 0
+      end
+
+      it 'render status 204' do
         expect(response.status).to eq(204)
       end
     end
