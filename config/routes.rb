@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions do
+    post 'vote_up', on: :member, as: 'vote_up'
     resources :answers, shallow: true do
       post 'set_as_best', on: :member, as: 'best'
     end
