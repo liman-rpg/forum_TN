@@ -17,7 +17,7 @@ shared_examples_for "voted" do
 
       it "render json with id, score" do
         vote_up
-        expect(response.body).to eq ({ id: votable.id, score: votable.total_score }).to_json
+        expect(response.body).to eq ({ id: votable.id, score: votable.total_score, status: true }).to_json
       end
     end
 
@@ -47,7 +47,7 @@ shared_examples_for "voted" do
 
       it "render json with id, score" do
         vote_down
-        expect(response.body).to eq ({ id: votable.id, score: votable.total_score }).to_json
+        expect(response.body).to eq ({ id: votable.id, score: votable.total_score, status: true }).to_json
       end
     end
 
@@ -76,7 +76,7 @@ shared_examples_for "voted" do
       end
 
       it "render json with id, score" do
-        expect(response.body).to eq ({ id: votable.id, score: votable.total_score }).to_json
+        expect(response.body).to eq ({ id: votable.id, score: votable.total_score, status: false }).to_json
       end
     end
 
