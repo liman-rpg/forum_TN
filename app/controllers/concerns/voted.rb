@@ -8,17 +8,17 @@ module Voted
 
   def vote_up
     @votable.vote_up(current_user)
-    render json: { id: @votable.id, score: @votable.total_score }
+    render json: { id: @votable.id, score: @votable.total_score, status: true }
   end
 
   def vote_down
     @votable.vote_down(current_user)
-    render json: { id: @votable.id, score: @votable.total_score }
+    render json: { id: @votable.id, score: @votable.total_score, status: true }
   end
 
   def vote_cancel
     @votable.vote_cancel(current_user)
-    render json: { id: @votable.id, score: @votable.total_score }
+    render json: { id: @votable.id, score: @votable.total_score, status: false }
   end
 
   private
