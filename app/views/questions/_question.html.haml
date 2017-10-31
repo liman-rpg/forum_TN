@@ -6,6 +6,9 @@
   Body:
 %p= @question.body
 
+.voting
+  = render 'votes/vote', votable: @question
+
 - if user_signed_in? && current_user.author_of?(@question)
   .links
     = link_to "Edit", "", class: "edit-question-link"
