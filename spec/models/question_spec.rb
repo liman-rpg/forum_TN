@@ -36,5 +36,14 @@ RSpec.describe Question, type: :model do
         expect(model.votes.count).to eq 0
       end
     end
+
+    describe '#total_score' do
+      let!(:votes_up)   { create_list(:vote, 3, :up, votable: model) }
+      let!(:votes_down) { create_list(:vote, 2, :down, votable: model) }
+
+      it 'return sum all the vote :score' do
+        expect(model.total_score).to eq 1
+      end
+    end
   end
 end
