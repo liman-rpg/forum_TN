@@ -10,40 +10,5 @@ RSpec.describe Question, type: :model do
 
   it { should validate_length_of(:body).is_at_least(5) }
 
-  describe "Voting" do
-    let(:model)  { create(:question, user: user) }
-    let(:user)   { create(:user) }
-
-    describe '#vote_up' do
-      it 'create new vote with score = 1' do
-        expect { model.vote_up(user) }.to change(model.votes, :count).by(1)
-        expect(model.votes.first.score).to eq 1
-      end
-    end
-
-    describe '#vote_down' do
-      it 'create new vote with score = -1' do
-        expect { model.vote_down(user) }.to change(model.votes, :count).by(1)
-        expect(model.votes.first.score).to eq -1
-      end
-    end
-
-    describe '#vote_cancel' do
-      let!(:vote) { create(:vote, votable: model, user: user) }
-
-      it 'delete vote' do
-        model.vote_cancel(user)
-        expect(model.votes.count).to eq 0
-      end
-    end
-
-    describe '#total_score' do
-      let!(:votes_up)   { create_list(:vote, 3, :up, votable: model) }
-      let!(:votes_down) { create_list(:vote, 2, :down, votable: model) }
-
-      it 'return sum all the vote :score' do
-        expect(model.total_score).to eq 1
-      end
-    end
-  end
+  it_behaves_like "votable"
 end
