@@ -8,6 +8,22 @@ ready = ->
     $(this).hide();
     $('.edit_question').show();
 
+
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
 $(document).on('turbolinks:update', ready)
+
+voting = ->
+  $('.question .voting a').bind 'ajax:success', (e, data, status, xhr) ->
+    question = $.parseJSON(xhr.responseText)
+    $(".question .score").html("<p>Likes: #{question.score}</p>")
+    if question.status == true
+      $(".question .voting a.vote-link-up").hide()
+      $(".question .voting a.vote-link-down").hide()
+      $(".question .voting a.vote-link-cancel").show()
+    else
+      $(".question .voting a.vote-link-up").show()
+      $(".question .voting a.vote-link-down").show()
+      $(".question .voting a.vote-link-cancel").hide()
+
+$(document).ready(voting)
