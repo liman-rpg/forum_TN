@@ -4,6 +4,9 @@
     %p= answer.user.email
     %p= answer.body
 
+    .voting
+      = render 'votes/vote_for_answer', votable: answer
+
     .attachments-list
       %p
         Attachments:
