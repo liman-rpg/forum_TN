@@ -7,7 +7,7 @@
 %p= @question.body
 
 .voting
-  = render 'votes/vote', votable: @question
+  = render 'votes/vote_for_question', votable: @question
 
 - if user_signed_in? && current_user.author_of?(@question)
   .links
