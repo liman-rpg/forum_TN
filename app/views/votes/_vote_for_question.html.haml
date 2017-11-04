@@ -3,10 +3,10 @@
 
 -if user_signed_in? && !current_user.author_of?(votable)
   -unless votable.votes.exists?(user: current_user)
-    = link_to "Up \t", polymorphic_path(votable, action: :vote_up), remote: true, method: :post, class: 'vote-link-up'
-    = link_to "Down \t", polymorphic_path(votable, action: :vote_down), remote: true, method: :post, class: 'vote-link-down'
-    = link_to 'Cancel', polymorphic_path(votable, action: :vote_cancel), remote: true, method: :post, class: 'vote-link-cancel', style:'display:none'
+    = link_to "Up \t", polymorphic_path(votable, action: :vote_up), remote: true, method: :post, class: 'vote-link-true'
+    = link_to "Down \t", polymorphic_path(votable, action: :vote_down), remote: true, method: :post, class: 'vote-link-true'
+    = link_to 'Cancel', polymorphic_path(votable, action: :vote_cancel), remote: true, method: :post, class: 'vote-link-false', style:'display:none'
   -else
-    = link_to "Up \t", polymorphic_path(votable, action: :vote_up), remote: true, method: :post, class: 'vote-link-up', style:'display:none'
-    = link_to "Down \t", polymorphic_path(votable, action: :vote_down), remote: true, method: :post, class: 'vote-link-down', style:'display:none'
-    = link_to 'Cancel', polymorphic_path(votable, action: :vote_cancel), remote: true, method: :post, class: 'vote-link-cancel'
+    = link_to "Up \t", polymorphic_path(votable, action: :vote_up), remote: true, method: :post, class: 'vote-link-true', style:'display:none'
+    = link_to "Down \t", polymorphic_path(votable, action: :vote_down), remote: true, method: :post, class: 'vote-link-true', style:'display:none'
+    = link_to 'Cancel', polymorphic_path(votable, action: :vote_cancel), remote: true, method: :post, class: 'vote-link-false'

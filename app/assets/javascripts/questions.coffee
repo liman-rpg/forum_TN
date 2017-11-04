@@ -17,13 +17,11 @@ voting = ->
   $('.question .voting a').bind 'ajax:success', (e, data, status, xhr) ->
     question = $.parseJSON(xhr.responseText)
     $(".question .score").html("<p>Likes: #{question.score}</p>")
-    if question.status == true
-      $(".question .voting a.vote-link-up").hide()
-      $(".question .voting a.vote-link-down").hide()
-      $(".question .voting a.vote-link-cancel").show()
+    if question.status
+      $(".question .voting a.vote-link-true").hide()
+      $(".question .voting a.vote-link-false").show()
     else
-      $(".question .voting a.vote-link-up").show()
-      $(".question .voting a.vote-link-down").show()
-      $(".question .voting a.vote-link-cancel").hide()
+      $(".question .voting a.vote-link-true").show()
+      $(".question .voting a.vote-link-false").hide()
 
 $(document).ready(voting)
