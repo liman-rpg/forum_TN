@@ -3,7 +3,7 @@ module Voted
 
   included do
     before_action :get_votable, only: [:vote_up, :vote_down, :vote_cancel]
-    before_action :status_no_content, only: [:vote_up, :vote_down, :vote_cancel]
+    before_action :author_of?, only: [:vote_up, :vote_down, :vote_cancel]
   end
 
   def vote_up
@@ -27,9 +27,9 @@ module Voted
     @votable = model_klass.find(params[:id])
   end
 
-  def status_no_content
+  def author_of?
     if current_user.author_of?(@votable)
-      head :no_content
+      head :forbidden
     end
   end
 
