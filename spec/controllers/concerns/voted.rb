@@ -30,7 +30,7 @@ shared_examples_for "voted" do
 
       it 'render status 204' do
         vote_up
-        expect(response.status).to eq(204)
+        expect(response.status).to eq 403
       end
     end
   end
@@ -60,7 +60,7 @@ shared_examples_for "voted" do
 
       it 'render status 204' do
         vote_down
-        expect(response.status).to eq(204)
+        expect(response.status).to eq 403
       end
     end
   end
@@ -88,7 +88,7 @@ shared_examples_for "voted" do
       end
 
       it 'render status 204' do
-        expect(response.status).to eq(204)
+        expect(response.status).to eq 403
       end
     end
   end
