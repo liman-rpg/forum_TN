@@ -17,13 +17,11 @@ voting = ->
     answer = $.parseJSON(xhr.responseText)
     id = $(this).data('answerId')
     $(".answers div#answer-id-#{id} .score").html("<p>Likes: #{answer.score}</p>")
-    if answer.status == true
-      $(".answers div#answer-id-#{id} a.vote-link-up").hide()
-      $(".answers div#answer-id-#{id} a.vote-link-down").hide()
-      $(".answers div#answer-id-#{id} a.vote-link-cancel").show()
+    if answer.status
+      $(".answers div#answer-id-#{id} a.vote-link-true").hide()
+      $(".answers div#answer-id-#{id} a.vote-link-false").show()
     else
-      $(".answers div#answer-id-#{id} a.vote-link-up").show()
-      $(".answers div#answer-id-#{id} a.vote-link-down").show()
-      $(".answers div#answer-id-#{id} a.vote-link-cancel").hide()
+      $(".answers div#answer-id-#{id} a.vote-link-true").show()
+      $(".answers div#answer-id-#{id} a.vote-link-false").hide()
 
 $(document).ready(voting)
