@@ -1,10 +1,10 @@
 %p
   Questions list:
 
-%p
-  - @questions.each do |question|
-    %ul
-      %tr= link_to question.title, question_path(question)
+.questions-list
+  %ul
+    - @questions.each do |question|
+      %li= render 'question_link', question: question
 
 - if user_signed_in?
   %p= link_to "Add Question", new_question_path
