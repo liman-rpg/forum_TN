@@ -1,0 +1,25 @@
+div class="answer" id="answer-id-#{@answer.id}"
+  p Author:
+  p= @answer.user.email
+  p= @answer.body
+
+  .voting
+    .score
+      p= "Likes: 0"
+
+    - if gon.user_signed_in && @answer.user_id != gon.current_user_id
+      -unless @answer.votes.exists?(user: gon.current_user_id)
+        a class="vote_link_true" href="/answers/#{@answer.id}/vote_up" rel="nofollow" data-remote="true" data-method="post"  Up
+        a class="vote_link_true" href="/answers/#{@answer.id}/vote_down" rel="nofollow" data-remote="true" data-method="post"  Down
+        a class="vote_link_false" href="/answers/#{@answer.id}/vote_cancel" rel="nofollow" data-remote="true" data-method="post" style='display:none'  Cancel
+      - else
+        a class="vote_link_true" href="/answers/#{@answer.id}/vote_up" rel="nofollow" data-remote="true" data-method="post" style='display:none'  Up
+        a class="vote_link_true" href="/answers/#{@answer.id}/vote_down" rel="nofollow" data-remote="true" data-method="post" style='display:none'  Down
+        a class="vote_link_false" href="/answers/#{@answer.id}/vote_cancel" rel="nofollow" data-remote="true" data-method="post"  Down
+
+  .attachments-list
+    p Attachments:
+    ul
+      - for a in @answer.attachments
+        li class="attachment" id="attachment-id-#{a.id}"
+          a href="#{a.url}" = a.filename
