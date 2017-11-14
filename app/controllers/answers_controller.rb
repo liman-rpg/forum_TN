@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy]
   before_action :load_question, only: :create
   before_action :load_answer, only: [:edit, :update, :destroy, :set_as_best]
+  after_action :publish_answer, only: :create
 
   def edit
     @answer = Answer.find(params[:id])
@@ -43,6 +44,18 @@ class AnswersController < ApplicationController
   end
 
   private
+
+    def publish_answer
+      return if @answer.errors.any?
+      ActionCable.server.broadcast(
+        "questions/#{@question.id}",
+        ApplicationController.render(
+          partial: 'answers/create.json.jbuilder',
+          locals: { answer: @answer },
+        )
+      )
+    end
+
     def load_question
       @question = Question.find(params[:question_id])
     end
