@@ -16,7 +16,7 @@ feature 'Edit question', %q{
     end
 
     scenario "edit his question" do
-      within('.question') do
+      within('.question .links') do
         click_on 'Edit'
 
         fill_in 'Title', with: 'New Question Title'
@@ -68,7 +68,7 @@ feature 'Edit question', %q{
     end
 
     scenario 'sees validation errors' do
-      within('.question') do
+      within('.question .links') do
         click_on 'Edit'
 
         fill_in 'Title', with: nil

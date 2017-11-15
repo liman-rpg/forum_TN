@@ -1,0 +1,8 @@
+= simple_form_for([commentable, Comment.new]) do |f|
+  .comments-errors-form
+
+  .form-inputs
+    = f.input :body
+
+  .form-actions
+    = f.button :submit
