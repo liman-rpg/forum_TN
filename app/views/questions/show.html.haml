@@ -18,10 +18,12 @@
 
     .list
       - @question.comments.each do |c|
-        %p= "#{c.body}"
+        = render 'comments/comment', comment: c
 
     .form
-      = render 'comments/form', commentable: @question
+      - if user_signed_in?
+        = link_to "Add Comment", "", id: "voting-form"
+        = render 'comments/form', commentable: @question
 
 .answers
   %p= render @answers
