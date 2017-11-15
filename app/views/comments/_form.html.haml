@@ -1,4 +1,4 @@
-= simple_form_for([commentable, Comment.new], remote: true) do |f|
+= simple_form_for([commentable, Comment.new], remote: true, html: { id: "#{type}-comment-form-#{commentable.id}" }) do |f|
   .comments-errors-form
 
   .form-inputs

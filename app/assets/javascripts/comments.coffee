@@ -1,8 +1,10 @@
 ready = ->
-  $('.question').on 'click', '#voting-form', (e) ->
+  $('body').on 'click', '.comment-form-link', (e) ->
     e.preventDefault();
+    id = $(this).data('id')
+    type = $(this).data('type')
     $(this).hide();
-    $('.new_comment').show();
+    $("##{type}-comment-form-#{id}").show();
 
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
