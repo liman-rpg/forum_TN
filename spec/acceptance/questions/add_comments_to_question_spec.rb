@@ -16,9 +16,9 @@ feature 'Create comment to question', %q{
       visit question_path(question)
     end
 
-    scenario 'can create comment' do
+    scenario 'can create comment', js: true do
       within '.question .comments .form' do
-        # click_on 'Add comment'
+        click_on 'Add Comment'
         fill_in 'Body', with: 'NewCommentBody'
         click_on 'Create Comment'
       end
@@ -34,6 +34,16 @@ feature 'Create comment to question', %q{
         expect(page).to have_content 'CommentBody2'
       end
     end
+
+    scenario 'can see error message', js: true do
+      within '.question .comments .form' do
+        click_on 'Add Comment'
+        fill_in 'Body', with: nil
+        click_on 'Create Comment'
+
+        expect(page).to have_content "Body can't be blank"
+      end
+    end
   end
 
   scenario 'A quest can see comments list' do
@@ -45,11 +55,11 @@ feature 'Create comment to question', %q{
     end
   end
 
-  # scenario "Not Authenticate user can not commenting" do
-  #   visit question_path(question)
+  scenario "Not Authenticate user can not commenting" do
+    visit question_path(question)
 
-  #   within '.question .comments' do
-  #     expect(page).to_not have_link 'Add comment'
-  #   end
-  # end
+    within '.question .comments' do
+      expect(page).to_not have_link 'Add Comment'
+    end
+  end
 end
