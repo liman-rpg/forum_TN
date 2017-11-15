@@ -5,7 +5,6 @@ class CommentsController < ApplicationController
   def create
     @comment = @question.comments.new(comment_params.merge(user_id: current_user.id))
     @comment.save
-    redirect_to @question # временная логика
   end
 
   private

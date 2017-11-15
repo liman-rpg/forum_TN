@@ -1,0 +1,9 @@
+<% if @comment.errors.present? %>
+  <% @comment.errors.full_messages.each do |massage|%>
+    $('.comments-errors-form').append('<p><%= j massage%></p>');
+  <% end %>
+<% else %>
+  $('.comments .list').append('<%= j render @comment %>');
+  $('#comment_body').val('');
+  $('.comments-errors-form').empty();
+<% end %>
