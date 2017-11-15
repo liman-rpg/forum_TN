@@ -1,15 +1,27 @@
 .question
   = render @question
 
-.attachments-list
-  %p
-    Attachments:
+  .attachments-list
+    - if @question.attachments.any?
+      %p Attachments:
+
     %ul
       - @question.attachments.each do |a|
         %li{ :class => "attachment", :id => "attachment-id-#{a.id}" }
           = link_to a.file.identifier, a.file.url
           - if user_signed_in? && current_user.author_of?(@question)
             = link_to 'Delete file', attachment_path(a), method: :delete, remote: true
+
+  .comments
+    - if @question.comments.any?
+      %p Comments:
+
+    .list
+      - @question.comments.each do |c|
+        %p= "#{c.body}"
+
+    .form
+      = render 'comments/form', commentable: @question
 
 .answers
   %p= render @answers
