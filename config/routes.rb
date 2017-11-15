@@ -10,9 +10,10 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: :votable do
-    resources :comments, only: :create
+    resources :comments, only: :create, defaults: { commentable: 'question'}
     resources :answers, shallow: true, concerns: :votable do
       post 'set_as_best', on: :member, as: 'best'
+      resources :comments, only: :create, defaults: { commentable: 'answer'}
     end
   end
 
