@@ -22,8 +22,8 @@
 
     .form
       - if user_signed_in?
-        = link_to "Add Comment", "", id: "voting-form"
-        = render 'comments/form', commentable: @question
+        = link_to "Add Comment", "", class: 'comment-form-link', data: { id: @question.id, type: 'question' }
+        = render 'comments/form', commentable: @question, type: 'question'
 
 .answers
   %p= render @answers

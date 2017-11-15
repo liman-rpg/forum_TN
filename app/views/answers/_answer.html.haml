@@ -17,12 +17,25 @@
               - if user_signed_in? && current_user.author_of?(answer)
                 = link_to 'Delete file', attachment_path(a), method: :delete, remote: true
 
-    - if user_signed_in? && current_user.author_of?(answer.question)
-      .best-group
-        - unless answer.best?
-          = link_to 'Set as best', best_answer_path(answer), method: :post, remote: true
-        - else
-          %p The Best Answer
+    .comments
+      - if answer.comments.any?
+        %p Comments:
+
+      .list
+        - answer.comments.each do |c|
+          = render 'comments/comment', comment: c
+
+      .form
+        - if user_signed_in?
+          = link_to "Add Comment", "", class: 'comment-form-link', data: { id: answer.id, type: 'answer' }
+          = render 'comments/form', commentable: answer, type: 'answer'
+
+      - if user_signed_in? && current_user.author_of?(answer.question)
+        .best-group
+          - unless answer.best?
+            = link_to 'Set as best', best_answer_path(answer), method: :post, remote: true
+          - else
+            %p The Best Answer
 
     - if user_signed_in? && current_user.author_of?(answer)
       .links
