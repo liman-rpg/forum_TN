@@ -4,7 +4,15 @@ class CommentsController < ApplicationController
 
   def create
     @comment = @commentable.comments.new(comment_params.merge(user_id: current_user.id))
-    @comment.save
+    respond_to do |format|
+      if @comment.save
+        format.js
+        format.json { render json: @comment }
+      else
+        format.js
+        format.json { render json: @comment.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
   end
 
   private
