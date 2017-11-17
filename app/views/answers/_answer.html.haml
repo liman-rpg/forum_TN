@@ -28,7 +28,7 @@
       .form
         - if user_signed_in?
           = link_to "Add Comment", "", class: 'comment-form-link', data: { id: answer.id, type: 'answer' }
-          = render 'comments/form', commentable: answer, type: 'answer'
+        = render 'comments/form', commentable: answer, type: 'answer'
 
       - if user_signed_in? && current_user.author_of?(answer.question)
         .best-group
