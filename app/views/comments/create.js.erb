@@ -3,7 +3,13 @@
     $('.comments-errors-form').append('<p><%= j massage%></p>');
   <% end %>
 <% else %>
-  $('.comments .list').append('<%= j render @comment %>');
-  $('#comment_body').val('');
-  $('.comments-errors-form').empty();
+  <% id = @comment.commentable_id %>
+  <% type = @comment.commentable_type.downcase %>
+  <% form_path = "form##{type}-comment-form-#{id}" %>
+
+  $('<%= form_path %>').parent('.form').siblings('.list').append('<%= j render @comment %>');
+  $('<%= form_path %>').find('#comment_body').val('');
+  $('<%= form_path %>').find('.comments-errors-form').empty()
+  $('<%= form_path %>').siblings('a.comment-form-link').show();
+  $('<%= form_path %>').hide();
 <% end %>
