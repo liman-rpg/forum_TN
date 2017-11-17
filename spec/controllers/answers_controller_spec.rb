@@ -23,39 +23,92 @@ RSpec.describe AnswersController, type: :controller do
   describe "POST #create" do
     sign_in_user
 
-    context 'with valid attributes' do
-      let(:create_valid_answer) { post :create, params: { answer: attributes_for(:answer), question_id: question.id, format: :js} }
+    context 'format JS' do
+      context 'with valid attributes' do
+        let(:create_valid_answer) { post :create, params: { answer: attributes_for(:answer), question_id: question.id, format: :js} }
 
-      it "save new answer in database" do
-        expect{ create_valid_answer }.to change(question.answers, :count).by(+1)
+        it "save new answer in database" do
+          expect{ create_valid_answer }.to change(question.answers, :count).by(+1)
+        end
+
+        it "associated with the user" do
+          expect { create_valid_answer }.to change(@user.answers, :count).by(+1)
+        end
+
+        it 'render template create.js' do
+          create_valid_answer
+
+          expect(response).to render_template :create
+        end
       end
 
-      it "associated with the user" do
-        expect { create_valid_answer }.to change(@user.answers, :count).by(+1)
-      end
+      context 'with invalid attributes' do
+        let(:create_invalid_answer) { post :create, params: { answer: attributes_for(:invalid_answer), question_id: question.id, format: :js } }
 
-      it 'render template create.js' do
-        create_valid_answer
+        it "don't save new question in database" do
+          expect{ create_invalid_answer }.to_not change(Answer, :count)
+        end
 
-        expect(response).to render_template :create
+        it "not associated with the user" do
+          expect { create_invalid_answer }.to_not change(@user.answers, :count)
+        end
+
+        it 'render template create.js' do
+          create_invalid_answer
+
+          expect(response).to render_template :create
+        end
       end
     end
 
-    context 'with invalid attributes' do
-      let(:create_invalid_answer) { post :create, params: { answer: attributes_for(:invalid_answer), question_id: question.id, format: :js } }
+    context 'format JS' do
+      context 'with valid attributes' do
+        let(:create_valid_answer) { post :create, params: { answer: attributes_for(:answer), question_id: question.id, format: :json} }
 
-      it "don't save new question in database" do
-        expect{ create_invalid_answer }.to_not change(Answer, :count)
+        it "save new answer in database" do
+          expect{ create_valid_answer }.to change(question.answers, :count).by(+1)
+        end
+
+        it "associated with the user" do
+          expect { create_valid_answer }.to change(@user.answers, :count).by(+1)
+        end
+
+        it 'serves JSON with correct name field' do
+          create_valid_answer
+
+          expect(JSON.parse(response.body)['body']).to eq("Rspec Body Answer")
+        end
+
+        it 'response status OK' do
+          create_valid_answer
+
+          expect(response.status).to eq 200
+        end
       end
 
-      it "not associated with the user" do
-        expect { create_invalid_answer }.to_not change(@user.answers, :count)
-      end
+      context 'with invalid attributes' do
+        let(:create_invalid_answer) { post :create, params: { answer: attributes_for(:invalid_answer), question_id: question.id, format: :json } }
 
-      it 'render template create.js' do
-        create_invalid_answer
+        it "don't save new question in database" do
+          expect{ create_invalid_answer }.to_not change(Answer, :count)
+        end
 
-        expect(response).to render_template :create
+        it "not associated with the user" do
+          expect { create_invalid_answer }.to_not change(@user.answers, :count)
+        end
+
+        it 'render answer.errors' do
+          create_invalid_answer
+
+          expect(JSON.parse(response.body)[0]).to eq("Body is too short (minimum is 5 characters)")
+          expect(JSON.parse(response.body)[1]).to eq("Body can't be blank")
+        end
+
+        it 'response status unprocessable_entity' do
+          create_invalid_answer
+
+          expect(response.status).to eq 422
+        end
       end
     end
   end

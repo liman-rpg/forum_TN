@@ -41,4 +41,28 @@ feature 'Create answer', %q{
 
     expect(page).to_not have_selector 'textarea#answer_body'
   end
+
+  context "multiple sessions", js: true do
+    scenario "all users see new answer in real-time" do
+      Capybara.using_session("author") do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session("guest") do
+        visit question_path(question)
+      end
+
+      Capybara.using_session("author") do
+        fill_in 'Body Answer', with: 'BodyTestAnswer'
+        click_on 'Create Answer'
+
+        expect(page).to have_content 'BodyTestAnswer'
+      end
+
+      Capybara.using_session("guest") do
+        expect(page).to have_content 'BodyTestAnswer'
+      end
+    end
+  end
 end

@@ -42,6 +42,8 @@ gem 'pry-byebug'
 gem 'carrierwave'
 gem 'remotipart'
 gem "cocoon"
+gem 'skim'
+gem 'gon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -67,6 +69,8 @@ group :development do
   gem 'rubocop', require: false
   gem 'haml-lint', require: false
   gem 'rubocop-rspec', require: false
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
