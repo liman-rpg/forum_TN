@@ -1,4 +1,4 @@
-div class="answer" id="answer-id-#{@answer.id}"
+div.answer id="answer-id-#{@answer.id}"
   p Author:
   p= @answer.user.email
   p= @answer.body
@@ -7,15 +7,10 @@ div class="answer" id="answer-id-#{@answer.id}"
     .score
       p= "Likes: 0"
 
-    - if gon.user_signed_in && @answer.user_id != gon.current_user_id
-      -unless @answer.votes.exists?(user: gon.current_user_id)
-        a class="vote_link_true" href="/answers/#{@answer.id}/vote_up" rel="nofollow" data-remote="true" data-method="post"  Up
-        a class="vote_link_true" href="/answers/#{@answer.id}/vote_down" rel="nofollow" data-remote="true" data-method="post"  Down
-        a class="vote_link_false" href="/answers/#{@answer.id}/vote_cancel" rel="nofollow" data-remote="true" data-method="post" style='display:none'  Cancel
-      - else
-        a class="vote_link_true" href="/answers/#{@answer.id}/vote_up" rel="nofollow" data-remote="true" data-method="post" style='display:none'  Up
-        a class="vote_link_true" href="/answers/#{@answer.id}/vote_down" rel="nofollow" data-remote="true" data-method="post" style='display:none'  Down
-        a class="vote_link_false" href="/answers/#{@answer.id}/vote_cancel" rel="nofollow" data-remote="true" data-method="post"  Down
+    - if gon.user_sign_in && @answer.user_id != gon.current_user_id
+      a.vote-link-true data-answer-id="#{@answer.id}" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/vote_up" Up
+      a.vote-link-true data-answer-id="#{@answer.id}" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/vote_down" Down
+      a.vote-link-false data-answer-id="#{@answer.id}" style="display:none" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/vote_cancel" Cancel
 
   .attachments-list
     p Attachments:
@@ -23,3 +18,21 @@ div class="answer" id="answer-id-#{@answer.id}"
       - for a in @answer.attachments
         li class="attachment" id="attachment-id-#{a.id}"
           a href="#{a.url}" = a.filename
+
+  .comments
+    .list
+    .form
+      - if gon.user_sign_in
+        a.comment-form-link data-id="#{@answer.id}" data-type="answer" href="" Add Comment
+
+      form id="answer-comment-form-#{@answer.id}" novalidate="novalidate" class="simple_form new_comment" action="/answers/#{@answer.id}/comments" accept-charset="UTF-8" data-remote="true" method="post" style="display:none"
+        input name="utf8" type="hidden" value="✓"
+        .comments-errors-form
+        .form-inputs
+          div class="input text required comment_body"
+            abbr title="required" *
+              Body
+            label class="text required" for="comment_body"
+            textarea class="text required" name="comment[body]" id="comment_body"
+        div class="form-actions"
+          input type="submit" name="commit" value="Create Comment" class="btn" data-disable-with="Create Comment"
