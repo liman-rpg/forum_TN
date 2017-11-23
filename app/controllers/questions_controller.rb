@@ -5,46 +5,39 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   after_action :publish_question, only: :create
 
+  respond_to :js, only: :update
+
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
     @answer = Answer.new
     @answers = @question.answers
     gon.question_id = @question.id
+    respond_with @question
   end
 
   def new
     @question = Question.new
     @question.attachments.build
+    respond_with @question
   end
 
   def edit
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-
-    if @question.save
-      redirect_to @question, notice: 'Your question successfully created.'
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
     @question.update(question_params) if current_user.author_of?(@question)
+    respond_with @question
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      flash[:notice] = "Your question was successfully destroy."
-    else
-      flash[:notice] = "You can't delete that question"
-    end
-    redirect_to questions_path
+    respond_with(@question.destroy) if current_user.author_of?(@question)
   end
 
   private
