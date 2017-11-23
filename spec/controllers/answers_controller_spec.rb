@@ -14,10 +14,6 @@ RSpec.describe AnswersController, type: :controller do
     it 'assigns requested answer to @answer' do
       expect(assigns(:answer)).to eq answer
     end
-
-    it 'render edit view' do
-      expect(response).to render_template :edit
-    end
   end
 
   describe "POST #create" do
@@ -34,12 +30,6 @@ RSpec.describe AnswersController, type: :controller do
         it "associated with the user" do
           expect { create_valid_answer }.to change(@user.answers, :count).by(+1)
         end
-
-        it 'render template create.js' do
-          create_valid_answer
-
-          expect(response).to render_template :create
-        end
       end
 
       context 'with invalid attributes' do
@@ -52,16 +42,10 @@ RSpec.describe AnswersController, type: :controller do
         it "not associated with the user" do
           expect { create_invalid_answer }.to_not change(@user.answers, :count)
         end
-
-        it 'render template create.js' do
-          create_invalid_answer
-
-          expect(response).to render_template :create
-        end
       end
     end
 
-    context 'format JS' do
+    context 'format JSON' do
       context 'with valid attributes' do
         let(:create_valid_answer) { post :create, params: { answer: attributes_for(:answer), question_id: question.id, format: :json} }
 
@@ -78,12 +62,6 @@ RSpec.describe AnswersController, type: :controller do
 
           expect(JSON.parse(response.body)['body']).to eq("Rspec Body Answer")
         end
-
-        it 'response status OK' do
-          create_valid_answer
-
-          expect(response.status).to eq 200
-        end
       end
 
       context 'with invalid attributes' do
@@ -95,19 +73,6 @@ RSpec.describe AnswersController, type: :controller do
 
         it "not associated with the user" do
           expect { create_invalid_answer }.to_not change(@user.answers, :count)
-        end
-
-        it 'render answer.errors' do
-          create_invalid_answer
-
-          expect(JSON.parse(response.body)[0]).to eq("Body is too short (minimum is 5 characters)")
-          expect(JSON.parse(response.body)[1]).to eq("Body can't be blank")
-        end
-
-        it 'response status unprocessable_entity' do
-          create_invalid_answer
-
-          expect(response.status).to eq 422
         end
       end
     end
@@ -132,10 +97,6 @@ RSpec.describe AnswersController, type: :controller do
           answer.reload
           expect(answer.body).to eq "New Body"
         end
-
-        it 'render update.js' do
-          expect(response).to render_template :update
-        end
       end
 
       context 'with invalid attributes' do
@@ -146,10 +107,6 @@ RSpec.describe AnswersController, type: :controller do
         it "don't update answer's params in database" do
           answer.reload
           expect(answer.body).to eq "Rspec Body Answer"
-        end
-
-        it 'render update.js' do
-          expect(response).to render_template :update
         end
       end
     end
@@ -162,10 +119,6 @@ RSpec.describe AnswersController, type: :controller do
       it "don't update answer's params in database" do
         answer.reload
         expect(answer.body).to eq "Rspec Body Answer"
-      end
-
-      it 'render update.js' do
-        expect(response).to render_template :update
       end
     end
   end
@@ -181,22 +134,12 @@ RSpec.describe AnswersController, type: :controller do
         answer
         expect{ delete_answer }.to change(Answer, :count).by(-1)
       end
-
-      it 'render destroy.js' do
-        delete_answer
-        expect(response).to render_template :destroy
-      end
     end
 
     context 'not author' do
       it 'does not remove a answer from the database' do
         answer
         expect{ delete_answer }.to_not change(Answer, :count)
-      end
-
-      it 'render destroy.js' do
-        delete_answer
-        expect(response).to render_template :destroy
       end
     end
   end
