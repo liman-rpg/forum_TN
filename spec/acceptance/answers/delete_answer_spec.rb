@@ -15,7 +15,7 @@ feature 'Delete answer', %q{
     visit question_path(question)
     click_on 'Delete Answer'
 
-    expect(page).to have_content 'Your answer was successfully destroy.'
+    expect(page).to have_content 'Answer was successfully destroyed.'
     expect(page).to_not have_content answer.body
     expect(current_path).to eq question_path(question)
   end

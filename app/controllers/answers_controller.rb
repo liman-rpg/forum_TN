@@ -6,41 +6,28 @@ class AnswersController < ApplicationController
   before_action :load_answer, only: [:edit, :update, :destroy, :set_as_best]
   after_action :publish_answer, only: :create
 
+  respond_to :js, only: [:create, :update, :destroy, :set_as_best]
+  respond_to :json, only: :create
+
   def edit
-    @answer = Answer.find(params[:id])
   end
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-
-    respond_to do |format|
-      if @answer.save
-        format.js
-        format.json { render json: @answer }
-      else
-        format.js
-        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
     @answer.update(answer_params) if current_user.author_of?(@answer)
+    respond_with @answer
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      flash.now[:notice] = "Your answer was successfully destroy."
-    else
-      flash.now[:notice] = "You can't delete that answer"
-    end
+    respond_with(@answer.destroy) if current_user.author_of?(@answer)
   end
 
   def set_as_best
-    @answer.set_as_best if current_user.author_of?(@answer.question)
     @answers = @answer.question.answers
+    respond_with(@answer.set_as_best) if current_user.author_of?(@answer.question)
   end
 
   private
