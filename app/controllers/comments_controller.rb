@@ -3,17 +3,10 @@ class CommentsController < ApplicationController
   before_action :load_commentable
   after_action :publish_comment, only: :create
 
+  respond_to :js, only: :create
+
   def create
-    @comment = @commentable.comments.new(comment_params.merge(user_id: current_user.id))
-    respond_to do |format|
-      if @comment.save
-        format.js
-        format.json { render json: @comment }
-      else
-        format.js
-        format.json { render json: @comment.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
+    respond_with(@comment = @commentable.comments.create(comment_params.merge(user_id: current_user.id)))
   end
 
   private
