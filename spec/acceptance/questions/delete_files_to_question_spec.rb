@@ -23,7 +23,7 @@ feature 'Delete files to question', %q{
           click_on 'Delete file'
         end
 
-        expect(page).to have_content "Your attachment was successfully destroy."
+        expect(page).to have_content "Attachment was successfully destroyed."
         expect(page).to_not have_link 'acceptance_helper.rb', href: /uploads\/attachment\/file\/\d+\/\w+_helper.rb/
       end
 

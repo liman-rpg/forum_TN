@@ -14,11 +14,6 @@ RSpec.describe AttachmentsController, type: :controller do
         question
         expect { delete_question_attachment }.to change(question.attachments, :count).by(-1)
       end
-
-      it 'to render destroy.js view' do
-        delete_question_attachment
-        expect(response).to render_template :destroy
-      end
     end
 
     context 'by not the author of question' do
@@ -27,11 +22,6 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'doesnt deletes the attachment from database' do
         question
         expect { delete_question_attachment }.to_not change(Attachment, :count)
-      end
-
-      it 'render destroy.js view' do
-        delete_question_attachment
-        expect(response).to render_template :destroy
       end
     end
 
@@ -42,11 +32,6 @@ RSpec.describe AttachmentsController, type: :controller do
         answer
         expect { delete_answer_attachment }.to change(answer.attachments, :count).by(-1)
       end
-
-      it 'render destroy.js view' do
-        delete_answer_attachment
-        expect(response).to render_template :destroy
-      end
     end
 
     context 'by not the author of answer' do
@@ -55,11 +40,6 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'doesnt deletes the attachment from database' do
         answer
         expect { delete_answer_attachment }.to_not change(Attachment, :count)
-      end
-
-      it 'to render destroy.js view' do
-        delete_answer_attachment
-        expect(response).to render_template :destroy
       end
     end
   end
