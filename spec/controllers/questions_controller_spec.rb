@@ -13,10 +13,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'populates an array for all questions' do
       expect(assigns(:questions)).to match_array(question)
     end
-
-    it 'render index view' do
-      expect(response).to render_template :index
-    end
   end
 
   describe "GET #show" do
@@ -24,10 +20,6 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assigns the request question to @question' do
       expect(assigns(:question)).to eq question
-    end
-
-    it 'render show view' do
-      expect(response).to render_template :show
     end
   end
 
@@ -42,10 +34,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'builds new attachment for question' do
       expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
-
-    it 'render new view' do
-      expect(response).to render_template :new
-    end
   end
 
   describe "GET #edit" do
@@ -54,10 +42,6 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assigns an edit Question to @question' do
       expect(assigns(:question)).to eq question
-    end
-
-    it 'render edit view' do
-      expect(response).to render_template :edit
     end
   end
 
@@ -74,11 +58,6 @@ RSpec.describe QuestionsController, type: :controller do
       it "associated with the user" do
         expect { create_valid_question }.to change(@user.questions, :count).by(+1)
       end
-
-      it 'redirects to show view' do
-        create_valid_question
-        expect(response).to redirect_to question_path(assigns(:question))
-      end
     end
 
     context 'with invalid attributes' do
@@ -90,11 +69,6 @@ RSpec.describe QuestionsController, type: :controller do
 
       it "not associated with the user" do
         expect { create_invalid_question }.to_not change(@user.questions, :count)
-      end
-
-      it 're-render new view' do
-        create_invalid_question
-        expect(response).to render_template :new
       end
     end
   end
@@ -117,10 +91,6 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.title).to eq "New Title"
         expect(question.body).to eq "New Body"
       end
-
-      it 'render update.js' do
-        expect(response).to render_template :update
-      end
     end
 
     context 'with invalid attributes' do
@@ -131,10 +101,6 @@ RSpec.describe QuestionsController, type: :controller do
         question.reload
         expect(question.title).to eq question.title
         expect(question.body).to eq question.body
-      end
-
-      it 'render update.js' do
-        expect(response).to render_template :update
       end
     end
   end
@@ -150,12 +116,6 @@ RSpec.describe QuestionsController, type: :controller do
         question
         expect{ delete_question }.to change(Question, :count).by(-1)
       end
-
-      it 'redirects to root_path' do
-        delete_question
-        expect(response).to redirect_to questions_path
-        expect(flash[:notice]).to be_present
-      end
     end
 
     context 'not author' do
@@ -163,100 +123,6 @@ RSpec.describe QuestionsController, type: :controller do
         question
         expect{ delete_question }.to_not change(Question, :count)
       end
-
-      it "redirects to root_path" do
-        delete_question
-        expect(response).to redirect_to questions_path
-        expect(flash[:notice]).to be_present
-      end
     end
   end
 end
-
-  # describe "POST #vote_up" do
-  #   sign_in_user
-
-  #   let(:vote_up) { post :vote_up, params: { id: question } }
-
-  #   context 'as not the author' do
-  #     it "change vote count by +1" do
-  #       expect{ vote_up }.to change(question.votes, :count).by(+1)
-  #     end
-
-  #     it "render json with id, score" do
-  #       vote_up
-  #       expect(response.body).to eq ({ id: question.id, score: question.total_score }).to_json
-  #     end
-  #   end
-
-  #   context 'as the author' do
-  #     let(:question) { create(:question, user: @user) }
-
-  #     it "not change Vote count" do
-  #       expect{ vote_up }.to_not change(question.votes, :count)
-  #     end
-
-  #     it 'render status 204' do
-  #       vote_up
-  #       expect(response.status).to eq(204)
-  #     end
-  #   end
-  # end
-
-  # describe "POST #vote_down" do
-  #   sign_in_user
-
-  #   let(:vote_down) { post :vote_down, params: { id: question } }
-
-  #   context 'as not the author' do
-  #     it "change vote count by +1" do
-  #       expect{ vote_down }.to change(question.votes, :count).by(+1)
-  #     end
-
-  #     it "render json with id, score" do
-  #       vote_down
-  #       expect(response.body).to eq ({ id: question.id, score: question.total_score }).to_json
-  #     end
-  #   end
-
-  #   context 'as the author' do
-  #     let(:question) { create(:question, user: @user) }
-
-  #     it "not change Vote count" do
-  #       expect{ vote_down }.to_not change(question.votes, :count)
-  #     end
-
-  #     it 'render status 204' do
-  #       vote_down
-  #       expect(response.status).to eq(204)
-  #     end
-  #   end
-  # end
-
-  # describe "POST #vote_cancel" do
-  #   sign_in_user
-
-  #   before { post :vote_cancel, params: { id: question } }
-
-  #   context 'as not the author' do
-  #     it "delete vote" do
-  #       expect(question.votes.count).to eq 0
-  #     end
-
-  #     it "render json with id, score" do
-  #       expect(response.body).to eq ({ id: question.id, score: question.total_score }).to_json
-  #     end
-  #   end
-
-  #   context 'as the author' do
-  #     let(:question) { create(:question, user: @user) }
-
-  #     it "not change Vote count" do
-  #       expect(question.votes.count).to eq 0
-  #     end
-
-  #     it 'render status 204' do
-  #       expect(response.status).to eq(204)
-  #     end
-  #   end
-  # end
