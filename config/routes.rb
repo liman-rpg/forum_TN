@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_collbacks: "omniauth_collbacks" }
 
   concern :votable do
     member do
