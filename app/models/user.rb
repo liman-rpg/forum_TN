@@ -24,7 +24,7 @@ class User < ApplicationRecord
     if user
       user.create_authorization(auth)
     else
-      name     = Devise.friendly_token[0, 5]
+      name     = auth.info[:name]
       password = Devise.friendly_token[0, 20]
       user     = User.create!(name: name, email: email, password: password, password_confirmation: password)
       user.create_authorization(auth)

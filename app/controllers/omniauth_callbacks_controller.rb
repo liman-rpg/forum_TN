@@ -8,7 +8,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # Не пойму как это проверить и соответсвенно путанница с пониманием кода. (Код взят из офф источника)
     # else
-    #   redirect_to new_user_registration_url
+    # redirect_to new_user_registration_url
     end
   end
 end
