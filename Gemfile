@@ -61,6 +61,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'launchy'
   gem 'database_cleaner'
+  gem 'capybara-email'
 end
 
 group :development do
@@ -75,6 +76,7 @@ group :development do
   gem 'rubocop-rspec', require: false
   gem "better_errors"
   gem "binding_of_caller"
+  gem "letter_opener"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
