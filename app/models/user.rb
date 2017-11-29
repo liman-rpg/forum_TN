@@ -14,23 +14,20 @@ class User < ApplicationRecord
     id == object.user_id
   end
 
-  def self.from_omniauth(auth)
+  def self.find_or_create_authorization(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
-    return authorization.user if authorization
+    return authorization if authorization
 
-    email = auth.info[:email]
+    email = auth.info.email
     user = User.where(email: email).first
 
-    if user
-      user.create_authorization(auth)
-    else
-      name     = auth.info[:name]
+    if !user
+      name     = auth.info.name
       password = Devise.friendly_token[0, 20]
       user     = User.create!(name: name, email: email, password: password, password_confirmation: password)
-      user.create_authorization(auth)
     end
 
-    user
+    user.create_authorization(auth)
   end
 
   def create_authorization(auth)

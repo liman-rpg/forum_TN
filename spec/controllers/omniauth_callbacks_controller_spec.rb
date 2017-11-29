@@ -6,9 +6,9 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
 
     before { request.env["devise.mapping"] = Devise.mappings[:user] }
 
-    context 'user does not exit' do
+    context 'user does not exist' do
       before do
-        request.env['omniauth.auth'] = OmniAuth::AuthHash.new(provider: 'facebook', uid: '12345', info: { email: 'new@user.com' })
+        request.env['omniauth.auth'] = OmniAuth::AuthHash.new(provider: 'facebook', uid: '12345', info: { email: 'new@user.com', name: 'AuthName' })
         get :facebook
       end
 
@@ -21,7 +21,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
       end
     end
 
-    context 'new user' do
+    context 'user exist' do
       let(:auth) { create(:authorization, user: user) }
 
       before do
