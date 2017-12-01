@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'omniauth_services/request_email', to: 'omniauth_services#request_email', as: :request_email
+  post 'omniauth_services/save_email', to: 'omniauth_services#save_email', as: :save_email
+  get 'omniauth_services/confirm_email', to: 'omniauth_services#confirm_email', as: :confirm_email
+
   resources :attachments, only: :destroy
 
   root to: "questions#index"
