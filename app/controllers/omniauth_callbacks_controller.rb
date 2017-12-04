@@ -11,7 +11,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def authorize
     auth = request.env["omniauth.auth"]
-    authorization = User.find_or_create_authorization(auth)
+    authorization = Authorization.find_or_create_authorization(auth)
     user = authorization.user if authorization
 
     if authorization.nil?
