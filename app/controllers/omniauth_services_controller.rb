@@ -8,7 +8,7 @@ class OmniauthServicesController < ApplicationController
       auth = { provider: session['devise.provider'], uid: session['devise.uid'], info: { email: email } }
 
       # transaction do
-      authorization = User.find_or_create_authorization(auth)
+      authorization = Authorization.find_or_create_authorization(auth)
       authorization.update!(status: false)
       # end
 
