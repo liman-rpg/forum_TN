@@ -4,6 +4,7 @@ FactoryGirl.define do
     provider "twitter"
     uid "13245"
     confirm_token Devise.friendly_token[0, 20]
+    status true
 
     trait :email_confirmed do
       status true

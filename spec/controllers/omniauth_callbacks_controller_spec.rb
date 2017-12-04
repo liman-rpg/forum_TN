@@ -17,7 +17,8 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
       end
 
       it 'signin user' do
-        expect(controller.current_user).to eq User.first
+        user = User.find_by(email: 'new@user.com', name: 'AuthName')
+        expect(controller.current_user).to eq user
       end
     end
 
