@@ -14,7 +14,7 @@ RSpec.describe OmniauthServicesController, type: :controller do
       let(:save_email) {
         post :save_email,
         params: { email: 'test@test.com' },
-        session: { uid: '12345', provider: 'twitter'}
+        session: { 'devise.uid' => '12345', 'devise.provider' => 'twitter'}
       }
 
       it 'render template' do

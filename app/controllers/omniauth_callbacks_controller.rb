@@ -15,8 +15,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     user = authorization.user if authorization
 
     if authorization.nil?
-      session[:provider] = auth.provider
-      session[:uid] = auth.uid
+      session['devise.provider'] = auth.provider
+      session['devise.uid'] = auth.uid
       redirect_to request_email_path
     elsif !authorization.status && !authorization.email_confirmed
       flash[:alert] = 'You need to confirm your email. Check your mailbox'

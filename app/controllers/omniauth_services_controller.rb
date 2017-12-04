@@ -5,7 +5,7 @@ class OmniauthServicesController < ApplicationController
   def save_email
     email = params[:email]
     if !email.blank?
-      auth = { provider: session[:provider], uid: session[:uid], info: { email: email } }
+      auth = { provider: session['devise.provider'], uid: session['devise.uid'], info: { email: email } }
 
       # transaction do
       authorization = User.find_or_create_authorization(auth)
