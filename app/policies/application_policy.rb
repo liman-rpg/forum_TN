@@ -2,7 +2,7 @@ class ApplicationPolicy
   attr_reader :user, :record
 
   def initialize(user, record)
-    @user = user
+    @user = user || User::Guest.new
     @record = record
   end
 
@@ -15,7 +15,7 @@ class ApplicationPolicy
   end
 
   def create?
-    false
+    user?
   end
 
   def new?
@@ -23,7 +23,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    owner?
   end
 
   def edit?
@@ -31,11 +31,23 @@ class ApplicationPolicy
   end
 
   def destroy?
-    false
+    update?
   end
 
   def scope
     Pundit.policy_scope!(user, record.class)
+  end
+
+  private
+
+  def owner?(target = record)
+    target.user_id == user.id
+  end
+
+  protected
+
+  def user?
+    user.id > 0
   end
 
   class Scope

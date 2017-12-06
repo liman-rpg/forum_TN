@@ -8,7 +8,7 @@ class QuestionsController < ApplicationController
   respond_to :js, only: :update
 
   def index
-    respond_with(@questions = Question.all)
+    respond_with(@questions = policy_scope(Question.all))
   end
 
   def show
@@ -21,23 +21,24 @@ class QuestionsController < ApplicationController
   def new
     @question = Question.new
     @question.attachments.build
-    respond_with @question
+    respond_with authorize @question
   end
 
   def edit
   end
 
   def create
+    authorize Question.new
     respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
-    @question.update(question_params) if current_user.author_of?(@question)
+    @question.update(question_params)
     respond_with @question
   end
 
   def destroy
-    respond_with(@question.destroy) if current_user.author_of?(@question)
+    respond_with(@question.destroy)
   end
 
   private
@@ -55,6 +56,7 @@ class QuestionsController < ApplicationController
 
     def load_question
       @question = Question.find(params[:id])
+      authorize @question
     end
 
     def question_params
