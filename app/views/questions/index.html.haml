@@ -6,5 +6,5 @@
     - @questions.each do |question|
       %li= render 'question_link', question: question
 
-- if user_signed_in?
+- if policy(Question).create?
   %p= link_to "Add Question", new_question_path

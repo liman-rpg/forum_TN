@@ -26,18 +26,18 @@
           = render 'comments/comment', comment: c
 
       .form
-        - if user_signed_in?
+        - if policy(Comment).new?
           = link_to "Add Comment", "", class: 'comment-form-link', data: { id: answer.id, type: 'answer' }
         = render 'comments/form', commentable: answer, type: 'answer'
 
-      - if user_signed_in? && current_user.author_of?(answer.question)
+      - if policy(answer).set_as_best?
         .best-group
           - unless answer.best?
             = link_to 'Set as best', best_answer_path(answer), method: :post, remote: true
           - else
             %p The Best Answer
 
-    - if user_signed_in? && current_user.author_of?(answer)
+    - if policy(answer).update?
       .links
         = link_to "Edit", '', class: 'edit-answer-link', data: { answer_id: answer.id }
         .form-group

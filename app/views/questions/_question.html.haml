@@ -9,7 +9,7 @@
 .voting
   = render 'votes/vote_for_question', votable: @question
 
-- if user_signed_in? && current_user.author_of?(@question)
+- if policy(@question).update?
   .links
     = link_to "Edit", "", class: "edit-question-link"
     = render "questions/form_edit"
