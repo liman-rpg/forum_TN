@@ -19,3 +19,9 @@ class User < ApplicationRecord
     self.authorizations.create!(provider: auth[:provider], uid: auth[:uid], status: true, confirm_token: token)
   end
 end
+
+class User::Guest < User
+  def id
+    0
+  end
+end
