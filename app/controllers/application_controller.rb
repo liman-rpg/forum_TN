@@ -2,7 +2,6 @@ require "application_responder"
 
 class ApplicationController < ActionController::Base
   include Pundit
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   self.responder = ApplicationResponder
   respond_to :html
@@ -14,11 +13,12 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def user_not_authorized(exception)
-    policy_name = exception.policy.class.to_s.underscore
-
-    flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    redirect_to(request.referrer || root_path)
+  rescue_from Pundit::NotAuthorizedError do |exception|
+    respond_to do |format|
+      format.html { redirect_to root_url, alert: exception.message }
+      format.js   { redirect_to root_url, alert: exception.message }
+      format.json { head :forbidden }
+    end
   end
 
   protected
