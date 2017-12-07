@@ -40,8 +40,8 @@ class ApplicationPolicy
 
   private
 
-  def owner?(target = record)
-    target.user_id == user.id
+  def owner?(object = record)
+    user.author_of?(object)
   end
 
   protected
