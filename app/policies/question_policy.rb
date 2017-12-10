@@ -1,4 +1,6 @@
 class QuestionPolicy < ApplicationPolicy
+  include VotePolicy
+
   class Scope < Scope
     def resolve
       scope
@@ -7,9 +9,5 @@ class QuestionPolicy < ApplicationPolicy
 
   def index?
     true
-  end
-
-  def vote?
-    user? && !owner?
   end
 end
