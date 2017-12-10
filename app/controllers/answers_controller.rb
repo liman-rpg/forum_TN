@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy]
+  before_action :authenticate_user!, only: [:edit, :create, :update, :destroy]
   before_action :load_question, only: :create
   before_action :load_answer, only: [:edit, :update, :destroy, :set_as_best]
   after_action :publish_answer, only: :create
@@ -13,21 +13,22 @@ class AnswersController < ApplicationController
   end
 
   def create
+    authorize Answer.new
     respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    @answer.update(answer_params)
     respond_with @answer
   end
 
   def destroy
-    respond_with(@answer.destroy) if current_user.author_of?(@answer)
+    respond_with(@answer.destroy)
   end
 
   def set_as_best
     @answers = @answer.question.answers
-    respond_with(@answer.set_as_best) if current_user.author_of?(@answer.question)
+    respond_with(@answer.set_as_best)
   end
 
   private
@@ -49,6 +50,7 @@ class AnswersController < ApplicationController
 
     def load_answer
       @answer = Answer.find(params[:id])
+      authorize @answer
     end
 
     def answer_params

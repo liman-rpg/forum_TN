@@ -28,6 +28,7 @@ class CommentsController < ApplicationController
 
   def load_commentable
     @commentable = commentable.classify.constantize.find(params["#{commentable}_id"])
+    authorize @commentable
   end
 
   def comment_params

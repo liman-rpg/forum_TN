@@ -1,6 +1,8 @@
 require "application_responder"
 
 class ApplicationController < ActionController::Base
+  include Pundit
+
   self.responder = ApplicationResponder
   respond_to :html
 
@@ -8,6 +10,16 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :gon_user, unless: :devise_controller?
+
+  private
+
+  rescue_from Pundit::NotAuthorizedError do |exception|
+    respond_to do |format|
+      format.html { redirect_to root_url, alert: exception.message }
+      format.js   { redirect_to root_url, alert: exception.message }
+      format.json { head :forbidden }
+    end
+  end
 
   protected
 

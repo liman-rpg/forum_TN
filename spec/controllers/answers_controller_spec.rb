@@ -146,11 +146,57 @@ RSpec.describe AnswersController, type: :controller do
 
   describe "POST #set_as_best" do
     sign_in_user
-    let!(:question) { create(:question, user: @user) }
-    let!(:answer)   { create(:answer, question: question, best: false) }
+    let(:question)          { create(:question, user: @user) }
+    let(:answer)            { create(:answer, question: question, best: false) }
+    let(:patch_best_answer) { patch :set_as_best, params: { id: answer.id, question_id: question, format: :js } }
 
-    it "change the answer :best from false to true" do
-      expect{ answer.set_as_best }.to change(answer, :best).to(true)
+    it 'assigns answer to best to @answer' do
+      patch_best_answer
+      answer.reload
+
+      expect(assigns(:answer)).to eq answer
+    end
+
+    context 'author question' do
+      it 'sets best flag for selected answer' do
+        patch_best_answer
+        answer.reload
+
+        expect(answer.best).to eq true
+      end
+
+      it 'cleans best flag for previously best answer' do
+        best_answer = create(:answer, question: question, best: true)
+
+        patch_best_answer
+        answer.reload
+        best_answer.reload
+
+        expect(best_answer.best).to eq false
+      end
+
+      it 'renders #set_as_best partial' do
+        patch_best_answer
+        expect(response).to render_template :set_as_best
+      end
+    end
+
+    context "not author question" do
+      before do
+        alt_user = create(:user)
+        alt_question = create(:question, user: alt_user)
+        @alt_answer = create(:answer, question: alt_question, user: user, best: false)
+        @alt_best_answer = create(:answer, question: alt_question, user: user, best: true)
+        patch :set_as_best, params: { id: @alt_answer, question_id: alt_question, format: :js }
+      end
+
+      it "doesn't sets best flag for selected answer" do
+        expect(@alt_answer.best).to eq false
+      end
+
+      it 'keeps best flag for already best answer' do
+        expect(@alt_best_answer.best).to eq true
+      end
     end
   end
 end
