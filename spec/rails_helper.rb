@@ -23,6 +23,7 @@ require 'pundit/matchers'
 # require only the support files necessary.
 #
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/policies/shared/**/*.rb')].each { |f| require f }
 Dir[Rails.root.join("spec/models/concerns/**/*.rb")].each {|f| require f}
 Dir[Rails.root.join("spec/controllers/concerns/**/*.rb")].each {|f| require f}
 

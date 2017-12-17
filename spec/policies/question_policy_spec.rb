@@ -5,6 +5,8 @@ RSpec.describe QuestionPolicy do
   let(:question) { create :question }
   let(:user)     { create :user }
 
+  it_behaves_like "Vote Policy", :question
+
   context "for a visitor" do
     let(:user) { nil }
 
