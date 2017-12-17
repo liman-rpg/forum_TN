@@ -1,9 +1,10 @@
 class ApplicationPolicy
   attr_reader :user, :record
 
-  def initialize(user, record)
+  def initialize(user, record, vote = nil)
     @user = user || User::Guest.new
     @record = record
+    @vote = vote
   end
 
   def index?

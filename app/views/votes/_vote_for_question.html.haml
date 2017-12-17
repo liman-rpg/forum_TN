@@ -1,7 +1,7 @@
 .score
   %p= "Likes: #{votable.total_score}"
 
--if user_signed_in? && !current_user.author_of?(votable)
+- if policy(votable).vote?
   -unless votable.votes.exists?(user: current_user)
     = link_to "Up \t", polymorphic_path(votable, action: :vote_up), remote: true, method: :post, class: 'vote-link-true'
     = link_to "Down \t", polymorphic_path(votable, action: :vote_down), remote: true, method: :post, class: 'vote-link-true'
