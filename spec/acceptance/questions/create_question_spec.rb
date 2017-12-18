@@ -13,11 +13,13 @@ feature 'Create question', %q{
       visit root_path
     end
 
-    scenario 'to create the correct question' do
+    scenario 'to create the correct question', js: true do
       click_on "Add Question"
 
       fill_in 'Title', with: 'New Question Title'
       fill_in 'Body', with: 'New Question Body'
+      # save_and_open_page
+
       click_on 'Create'
 
       expect(page).to have_content "Question was successfully created."
@@ -25,7 +27,7 @@ feature 'Create question', %q{
       expect(page).to have_content "New Question Body"
     end
 
-    scenario ' to create a non-valid question' do
+    scenario ' to create a non-valid question', js: true do
       click_on "Add Question"
 
       fill_in 'Title', with: nil
@@ -38,13 +40,13 @@ feature 'Create question', %q{
       fill_in 'Body', with: nil
       click_on 'Create'
 
-      expect(page).to have_content "Body can't be blank"
+      expect(page).to have_content "Bodycan't be blank"
 
       fill_in 'Title', with: 'New Question Title'
       fill_in 'Body', with: 'smal'
       click_on 'Create'
 
-      expect(page).to have_content "Body smalis too short (minimum is 5 characters)"
+      expect(page).to have_content "Bodyis too short (minimum is 5 characters)"
     end
   end
 
