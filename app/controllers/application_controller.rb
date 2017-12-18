@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError do |exception|
     respond_to do |format|
       format.html { redirect_to root_url, alert: exception.message }
-      format.js   { redirect_to root_url, alert: exception.message }
+      format.js   { head :forbidden }
       format.json { head :forbidden }
     end
   end

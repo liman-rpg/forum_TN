@@ -1,16 +1,8 @@
 class AnswerPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
-    end
-  end
-
+  include VotePolicy
+  
   def index?
     true
-  end
-
-  def vote?
-    user? && !owner?
   end
 
   def set_as_best?
