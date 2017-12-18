@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
 
   concern :votable do
@@ -17,6 +18,15 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+        get :all, on: :collection
+      end
+    end
+  end
+
   get 'omniauth_services/request_email', to: 'omniauth_services#request_email', as: :request_email
   post 'omniauth_services/save_email', to: 'omniauth_services#save_email', as: :save_email
   get 'omniauth_services/confirm_email', to: 'omniauth_services#confirm_email', as: :confirm_email
@@ -26,4 +36,5 @@ Rails.application.routes.draw do
   root to: "questions#index"
 
   mount ActionCable.server => '/cable'
+
 end

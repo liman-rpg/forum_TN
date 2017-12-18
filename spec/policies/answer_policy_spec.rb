@@ -7,6 +7,7 @@ RSpec.describe AnswerPolicy do
 
   it_behaves_like "Vote Policy", :answer
 
+
   context "for a visitor" do
     let(:user) { nil }
 
