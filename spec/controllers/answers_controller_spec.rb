@@ -60,7 +60,7 @@ RSpec.describe AnswersController, type: :controller do
         it 'serves JSON with correct name field' do
           create_valid_answer
 
-          expect(JSON.parse(response.body)['body']).to eq("Rspec Body Answer")
+          expect(JSON.parse(response.body)['answer']['body']).to eq("Rspec Body Answer")
         end
       end
 
