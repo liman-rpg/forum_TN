@@ -3,6 +3,10 @@ class Api::V1::BaseController < ApplicationController
 
   respond_to :json
 
+  def current_user
+    current_resource_owner
+  end
+
   protected
 
   def current_resource_owner
