@@ -1,11 +1,9 @@
 class UserPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
-    end
+  def index?
+    true
   end
 
-  def api?
-    user
+  def me?
+    show?
   end
 end
