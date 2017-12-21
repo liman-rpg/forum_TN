@@ -7,6 +7,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def create
+    authorize Answer.new, :api?
     respond_with(@answer = @question.answers.create(answer_params.merge(user_id: current_resource_owner.id)))
   end
 
@@ -14,6 +15,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def load_answer
     @answer = Answer.find(params[:id])
+    authorize @answer, :api?
   end
 
   def load_question
