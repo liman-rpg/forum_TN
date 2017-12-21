@@ -10,6 +10,10 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     respond_with @question
   end
 
+  def create
+    respond_with(@question = current_resource_owner.questions.create(question_params))
+  end
+
   def answers
     @answers = @question.answers
     respond_with @answers
@@ -19,5 +23,9 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def load_question
     @question = Question.find(params[:id])
+  end
+
+  def question_params
+    params.require(:question).permit(:title, :body)
   end
 end
