@@ -3,7 +3,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def index
     @questions = Question.all
-    authorize @questions, :api?
+    authorize @questions
     respond_with @questions, each_serializer: QuestionCollectionSerializer
   end
 
@@ -12,7 +12,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def create
-    authorize Question.new, :api?
+    authorize Question.new
     respond_with(@question = current_resource_owner.questions.create(question_params))
   end
 
@@ -25,7 +25,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def load_question
     @question = Question.find(params[:id])
-    authorize @question, :api?
+    authorize @question
   end
 
   def question_params

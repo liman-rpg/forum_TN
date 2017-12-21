@@ -4,4 +4,8 @@ class QuestionPolicy < ApplicationPolicy
   def index?
     true
   end
+
+  def answers?
+    show?
+  end
 end
