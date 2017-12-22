@@ -25,30 +25,12 @@ describe 'Answers Api' do
         end
       end
 
-      context 'comments' do
-        it 'returns list comments' do
-          expect(response.body).to have_json_size(3).at_path('answer/comments')
-        end
-
-        %w(id body created_at updated_at).each do |attr|
-          it "contains #{attr}" do
-            expect(response.body).to be_json_eql(comment.send(attr.to_sym).to_json).at_path("answer/comments/0/#{attr}")
-          end
-        end
+      it_behaves_like "API Commentable" do
+        let(:path) { 'answer' }
       end
 
-      context 'attachments' do
-        it 'returns list comments' do
-          expect(response.body).to have_json_size(1).at_path('answer/attachments')
-        end
-
-        it 'answer object contain id' do
-          expect(response.body).to be_json_eql(attachment.id.to_json).at_path("answer/attachments/0/id")
-        end
-
-        it 'answer object contain url' do
-          expect(response.body).to be_json_eql(attachment.file.url.to_json).at_path("answer/attachments/0/url")
-        end
+      it_behaves_like "API Attachable" do
+        let(:path) { 'answer' }
       end
     end
 
