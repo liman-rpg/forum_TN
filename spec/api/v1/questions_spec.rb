@@ -2,17 +2,7 @@ require 'rails_helper'
 
 describe 'Questions Api' do
   describe 'GET #index' do
-    context 'unauthorized' do
-      it 'return 401 status if there is no access_token' do
-        get "/api/v1/questions", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'return 401 status if access_token is invalid' do
-        get '/api/v1/questions', params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API Authenticable"
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
@@ -52,21 +42,14 @@ describe 'Questions Api' do
         end
       end
     end
+
+    def do_request(option = {})
+      get '/api/v1/questions', params: { format: :json }.merge(option)
+    end
   end
 
   describe 'GET #show' do
-    context 'unauthorized' do
-      let(:question) { create(:question) }
-      it 'return 401 status if there is no access_token' do
-        get "/api/v1/questions/question.id", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'return 401 status if access_token is invalid' do
-        get "/api/v1/questions/question.id", params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API Authenticable"
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
@@ -113,21 +96,14 @@ describe 'Questions Api' do
         end
       end
     end
+
+    def do_request(option = {})
+      get "/api/v1/questions/1", params: { format: :json }.merge(option)
+    end
   end
 
   describe 'GET #answers' do
-    context 'unauthorized' do
-      let(:question) { create(:question) }
-      it 'return 401 status if there is no access_token' do
-        get "/api/v1/questions/#{question.id}/answers", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'return 401 status if access_token is invalid' do
-        get "/api/v1/questions/#{question.id}/answers", params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API Authenticable"
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
@@ -144,6 +120,10 @@ describe 'Questions Api' do
         expect(response.body).to have_json_size(3).at_path("answers")
       end
     end
+
+    def do_request(option = {})
+      get "/api/v1/questions/1/answers", params: { format: :json }.merge(option)
+    end
   end
 
   describe 'POST #create' do
@@ -151,17 +131,7 @@ describe 'Questions Api' do
     let(:question)     { create(:question) }
     let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-    context 'unauthorized' do
-      it 'return 401 status if there is no access_token' do
-        post "/api/v1/questions/", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'return 401 status if access_token is invalid' do
-        post "/api/v1/questions/", params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API Authenticable"
 
     context 'authorized' do
       let(:question_last) { Question.last }
@@ -208,6 +178,10 @@ describe 'Questions Api' do
           expect(response.status).to eq 422
         end
       end
+    end
+
+    def do_request(option = {})
+      post "/api/v1/questions/", params: { format: :json }.merge(option)
     end
   end
 end
